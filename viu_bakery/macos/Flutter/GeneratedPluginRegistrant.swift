@@ -5,14 +5,14 @@
 import FlutterMacOS
 import Foundation
 
-import file_chooser
-import path_provider_foundation
 import cloud_firestore
+import file_chooser
 import firebase_core
+import path_provider_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  FileChooserPlugin.register(with: registry.registrar(forPlugin: "FileChooserPlugin"))
-  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   FLTFirebaseFirestorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseFirestorePlugin"))
+  FileChooserPlugin.register(with: registry.registrar(forPlugin: "FileChooserPlugin"))
   FLTFirebaseCorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCorePlugin"))
+  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
 }
