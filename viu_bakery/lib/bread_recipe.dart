@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'ingredient.dart';
 
 class BreadRecipe {
-  final String name;
-  final List<Ingredient> ingredients;
-  final String starter;
-  final String poolish;
-  final String dough;
-  final String bakersPercentage;
-  final String formula;
+  String name;
+  List<Ingredient> ingredients;
+  String starter;
+  String poolish;
+  String dough;
+  String bakersPercentage;
+  String formula;
 
   BreadRecipe({
     required this.name,
@@ -49,16 +50,16 @@ class BreadRecipe {
   }
 }
 
-class Ingredient {
-  final String name;
-  final String amount;
+// class Ingredient {
+//   final String name;
+//   final String amount;
 
-  Ingredient({required this.name, required this.amount});
+//   Ingredient({required this.name, required this.amount});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'amount': amount,
-    };
-  }
-}
+//   Map<String, dynamic> toMap() {
+//     return {
+//       'name': name,
+//       'amount': amount,
+//     };
+//   }
+// }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'bread_recipe.dart';
 
 class BreadRecipeDisplay extends StatelessWidget {
@@ -14,69 +13,58 @@ class BreadRecipeDisplay extends StatelessWidget {
         title: Text(recipe.name),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (int i = 0; i < recipe.ingredients.length; i++) ...[
-                if (i == 0) _buildHeaderRow(),
-                _buildDataRow(i),
-                if (i < recipe.ingredients.length - 1)
-                  Divider(height: 1, thickness: 1),
+        padding: EdgeInsets.all(8.0),
+        child: Table(
+          defaultColumnWidth: IntrinsicColumnWidth(),
+          border: TableBorder.all(color: Colors.grey[300]!),
+          children: [
+            TableRow(
+              decoration: BoxDecoration(color: Colors.grey[200]),
+              children: [
+                _buildHeaderCell('Ingredients'),
+                _buildHeaderCell('Amount'),
+                _buildHeaderCell('Starter'),
+                _buildHeaderCell('Poolish'),
+                _buildHeaderCell('Dough'),
+                _buildHeaderCell("Bakers'"),
+                _buildHeaderCell('Formula'),
               ],
-            ],
-          ),
+            ),
+            for (int i = 0; i < recipe.ingredients.length; i++)
+              TableRow(
+                decoration: BoxDecoration(
+                  color: i % 2 == 0 ? Colors.white : Colors.grey[100],
+                ),
+                children: [
+                  _buildDataCell(recipe.ingredients[i].name),
+                  _buildDataCell(recipe.ingredients[i].amount),
+                  i == 0 ? _buildDataCell(recipe.starter) : _buildDataCell(''),
+                  i == 0 ? _buildDataCell(recipe.poolish) : _buildDataCell(''),
+                  i == 0 ? _buildDataCell(recipe.dough) : _buildDataCell(''),
+                  i == 0
+                      ? _buildDataCell(recipe.bakersPercentage)
+                      : _buildDataCell(''),
+                  i == 0 ? _buildDataCell(recipe.formula) : _buildDataCell(''),
+                ],
+              ),
+          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // Add the recipe to Firestore
-          await recipe.addToFirestore();
-
-          // Show a success message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Recipe added to Firestore!'),
-            ),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 
-  Widget _buildHeaderRow() {
-    return Row(
-      children: [
-        Expanded(child: Text('')),
-        Expanded(child: Text('Ingredients')),
-        Expanded(child: Text('Amount')),
-        Expanded(child: Text('Starter')),
-        Expanded(child: Text('Poolish')),
-        Expanded(child: Text('Dough')),
-        Expanded(child: Text("Bakers'")),
-        Expanded(child: Text('Formula')),
-      ],
-    );
-  }
-
-  Widget _buildDataRow(int i) {
+  Widget _buildHeaderCell(String text) {
     return Container(
-      color: i % 2 == 0 ? Colors.white : Colors.grey[100],
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Expanded(child: Text((i + 1).toString())),
-          Expanded(child: Text(recipe.ingredients[i].name)),
-          Expanded(child: Text(recipe.ingredients[i].amount)),
-          Expanded(child: i == 0 ? Text(recipe.starter) : Text('')),
-          Expanded(child: i == 0 ? Text(recipe.poolish) : Text('')),
-          Expanded(child: i == 0 ? Text(recipe.dough) : Text('')),
-          Expanded(child: i == 0 ? Text(recipe.bakersPercentage) : Text('')),
-          Expanded(child: i == 0 ? Text(recipe.formula) : Text('')),
-        ],
-      ),
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      child: Text(text,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      child: Text(text, style: TextStyle(fontSize: 16)),
     );
   }
 }
