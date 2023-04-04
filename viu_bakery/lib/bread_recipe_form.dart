@@ -33,9 +33,11 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
       TextEditingController();
   final TextEditingController _formulaController = TextEditingController();
 
-  List<Ingredient> _ingredients = [];
-  String _ingredientName = '';
-  String _ingredientAmount = '';
+  // String _ingredientName = '';
+  // String _ingredientAmount = '';
+  List<List<String>> _ingredients = [
+    ['', ''],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -79,49 +81,42 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
 
   List<Widget> _buildIngredientsList() {
     return _ingredients.map((ingredient) {
-      return ListTile(
-        title: Text(ingredient.name),
-        subtitle: Text(ingredient.amount),
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            setState(() {
-              _ingredients.remove(ingredient);
-            });
-          },
-        ),
+      return Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (value) => ingredient[0] = value,
+              decoration: InputDecoration(labelText: 'Ingredient Name'),
+            ),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              onChanged: (value) => ingredient[1] = value,
+              decoration: InputDecoration(labelText: 'Ingredient Amount'),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                _ingredients.remove(ingredient);
+              });
+            },
+          ),
+        ],
       );
     }).toList();
   }
 
   Widget _buildAddIngredientButton() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            onChanged: (value) => _ingredientName = value,
-            decoration: InputDecoration(labelText: 'Ingredient Name'),
-          ),
-        ),
-        SizedBox(width: 8),
-        Expanded(
-          child: TextField(
-            onChanged: (value) => _ingredientAmount = value,
-            decoration: InputDecoration(labelText: 'Ingredient Amount'),
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              _recipe.ingredients
-                  .add(Ingredient(_ingredientName, _ingredientAmount));
-              _ingredientName = '';
-              _ingredientAmount = '';
-            });
-          },
-        )
-      ],
+    return IconButton(
+      icon: Icon(Icons.add),
+      onPressed: () {
+        setState(() {
+          _ingredients.add(['', '']);
+        });
+      },
     );
   }
 
@@ -129,18 +124,23 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
     return Column(
       children: [
         TextFormField(
+          controller: _starterController,
           decoration: InputDecoration(labelText: 'Starter'),
         ),
         TextFormField(
+          controller: _poolishController,
           decoration: InputDecoration(labelText: 'Poolish'),
         ),
         TextFormField(
+          controller: _doughController,
           decoration: InputDecoration(labelText: 'Dough'),
         ),
         TextFormField(
+          controller: _bakersPercentageController,
           decoration: InputDecoration(labelText: "Bakers' Percentage"),
         ),
         TextFormField(
+          controller: _formulaController,
           decoration: InputDecoration(labelText: 'Formula'),
         ),
       ],
@@ -151,6 +151,11 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _recipe.name = _nameController.text;
+      _recipe.ingredients = _ingredients
+          .where((ingredient) =>
+              ingredient[0].isNotEmpty && ingredient[1].isNotEmpty)
+          .map((ingredient) => Ingredient(ingredient[0], ingredient[1]))
+          .toList();
       _recipe.starter = _starterController.text;
       _recipe.poolish = _poolishController.text;
       _recipe.dough = _doughController.text;

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bakery Recipes',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: RecipeListScreen(),
@@ -40,54 +40,81 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Bakery Recipes'),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.orange[300],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.deepOrange,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  textStyle: TextStyle(fontSize: 18),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          BreadRecipeForm(onSubmit: _addRecipe),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('../background-assets/background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.grey[800],
+            ),
+            width: 450,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Text(
+                    'Recipes Section',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  );
-                },
-                child: Text('Add Recipe'),
-              ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.deepOrange,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  textStyle: TextStyle(fontSize: 18),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          RecipeDisplayScreen(recipes: _recipes),
-                    ),
-                  );
-                },
-                child: Text('View Recipes'),
-              ),
-            ],
+                SizedBox(height: 16),
+                _buildButton(
+                  label: 'Add Recipe',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BreadRecipeForm(onSubmit: _addRecipe),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 16),
+                _buildButton(
+                  label: 'View Recipes',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RecipeDisplayScreen(recipes: _recipes),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildButton(
+      {required String label, required VoidCallback onPressed}) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.orange[300],
+        padding: EdgeInsets.symmetric(vertical: 16),
+        textStyle: TextStyle(fontSize: 18),
+      ),
+      onPressed: onPressed,
+      child: Text(label),
     );
   }
 }
@@ -102,7 +129,7 @@ class RecipeDisplayScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Bakery Recipes'),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.orange[300],
       ),
       body: ListView.builder(
         itemCount: recipes.length,
