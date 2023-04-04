@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:viu_bakery/bread_recipe.dart';
 import 'package:viu_bakery/bread_recipe_display.dart';
 import 'package:viu_bakery/bread_recipe_form.dart';
+import 'package:viu_bakery/pastry_recipe_form.dart';
+import 'package:viu_bakery/pastry_recipe.dart';
+import 'package:viu_bakery/pastry_recipe_display.dart';
+import 'package:viu_bakery/cookie_recipe_form.dart';
+import 'package:viu_bakery/cookie_recipe.dart';
+import 'package:viu_bakery/cookies_recipe_display.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,19 +33,181 @@ class RecipeListScreen extends StatefulWidget {
 }
 
 class _RecipeListScreenState extends State<RecipeListScreen> {
-  final List<BreadRecipe> _recipes = [];
+  final List<BreadRecipe> _breadRecipes = [];
+  final List<PastryRecipe> _pastryRecipes = [];
+  final List<CookieRecipe> _cookieRecipes = [];
+  bool _showAddSubMenus = false;
+  bool _showViewSubMenus = false;
 
-  void _addRecipe(BreadRecipe recipe) {
+  void _addBreadRecipe(BreadRecipe recipe) {
     setState(() {
-      _recipes.add(recipe);
+      _breadRecipes.add(recipe);
     });
+  }
+
+  void _addPastryRecipe(PastryRecipe recipe) {
+    setState(() {
+      _pastryRecipes.add(recipe);
+    });
+  }
+
+  void _addCookieRecipe(CookieRecipe recipe) {
+    setState(() {
+      _cookieRecipes.add(recipe);
+    });
+  }
+
+  void _toggleAddSubMenus() {
+    setState(() {
+      _showAddSubMenus = !_showAddSubMenus;
+    });
+  }
+
+  void _toggleViewSubMenus() {
+    setState(() {
+      _showViewSubMenus = !_showViewSubMenus;
+    });
+  }
+
+  Widget _buildAddSubMenu() {
+    if (_showAddSubMenus) {
+      return Container(
+        margin: EdgeInsets.only(top: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: _buildButton(
+                label: 'Bread Recipe',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BreadRecipeForm(onSubmit: _addBreadRecipe),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _buildButton(
+                label: 'Pastry Recipe',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PastryRecipeForm(
+                        onSubmit: _addPastryRecipe,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _buildButton(
+                label: 'Cookies Recipe',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CookieRecipeForm(
+                        onSubmit: _addCookieRecipe,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox.shrink();
+  }
+
+  Widget _buildViewSubMenu() {
+    if (_showViewSubMenus) {
+      return Container(
+        margin: EdgeInsets.only(top: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: _buildButton(
+                label: 'Bread Recipes',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecipeDisplayScreen<BreadRecipe>(
+                        recipes: _breadRecipes,
+                        recipeNameGetter: (recipe) => recipe.name,
+                        recipeDisplayBuilder: (recipe) =>
+                            BreadRecipeDisplay(recipe: recipe),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _buildButton(
+                label: 'Pastry Recipes',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecipeDisplayScreen<PastryRecipe>(
+                        recipes: _pastryRecipes,
+                        recipeNameGetter: (recipe) => recipe.name,
+                        recipeDisplayBuilder: (recipe) =>
+                            PastryRecipeDisplay(recipe: recipe),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: _buildButton(
+                label: 'Cookies Recipes',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecipeDisplayScreen<CookieRecipe>(
+                        recipes: _cookieRecipes,
+                        recipeNameGetter: (recipe) => recipe.name,
+                        recipeDisplayBuilder: (recipe) =>
+                            CookieRecipeDisplay(recipe: recipe),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bakery Recipes'),
+        title: Image.asset(
+          '../background-assets/viu_logo.png',
+          height: 48,
+          width: 48,
+        ),
         backgroundColor: Colors.orange[300],
       ),
       body: Container(
@@ -74,28 +242,28 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 SizedBox(height: 16),
                 _buildButton(
                   label: 'Add Recipe',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            BreadRecipeForm(onSubmit: _addRecipe),
-                      ),
-                    );
-                  },
+                  onPressed: _toggleAddSubMenus,
+                ),
+                AnimatedCrossFade(
+                  firstChild: SizedBox.shrink(),
+                  secondChild: _buildAddSubMenu(),
+                  crossFadeState: _showAddSubMenus
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300),
                 ),
                 SizedBox(height: 16),
                 _buildButton(
                   label: 'View Recipes',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            RecipeDisplayScreen(recipes: _recipes),
-                      ),
-                    );
-                  },
+                  onPressed: _toggleViewSubMenus,
+                ),
+                AnimatedCrossFade(
+                  firstChild: SizedBox.shrink(),
+                  secondChild: _buildViewSubMenu(),
+                  crossFadeState: _showViewSubMenus
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300),
                 ),
               ],
             ),
@@ -119,10 +287,15 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   }
 }
 
-class RecipeDisplayScreen extends StatelessWidget {
-  final List<BreadRecipe> recipes;
+class RecipeDisplayScreen<T> extends StatelessWidget {
+  final List<T> recipes;
+  final String Function(T) recipeNameGetter;
+  final Widget Function(T) recipeDisplayBuilder;
 
-  RecipeDisplayScreen({required this.recipes});
+  RecipeDisplayScreen(
+      {required this.recipes,
+      required this.recipeNameGetter,
+      required this.recipeDisplayBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -136,12 +309,12 @@ class RecipeDisplayScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final recipe = recipes[index];
           return ListTile(
-            title: Text(recipe.name),
+            title: Text(recipeNameGetter(recipe)),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BreadRecipeDisplay(recipe: recipe),
+                  builder: (context) => recipeDisplayBuilder(recipe),
                 ),
               );
             },

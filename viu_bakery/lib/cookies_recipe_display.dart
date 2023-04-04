@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'bread_recipe.dart';
+import 'package:viu_bakery/cookie_recipe.dart';
 
-class BreadRecipeDisplay extends StatelessWidget {
-  final BreadRecipe recipe;
+class CookieRecipeDisplay extends StatelessWidget {
+  final CookieRecipe recipe;
 
-  BreadRecipeDisplay({required this.recipe});
+  CookieRecipeDisplay({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +61,10 @@ class BreadRecipeDisplay extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24),
-              _buildInfoSection('Starter', recipe.starter),
-              _buildInfoSection('Poolish', recipe.poolish),
-              _buildInfoSection('Dough', recipe.dough),
-              _buildInfoSection("Bakers' Percentage", recipe.bakersPercentage),
-              _buildInfoSection('Formula', recipe.formula),
+              _buildInfoSection('Method', recipe.method),
+              _buildInfoSection('Baking Time', recipe.bakingTime),
+              _buildInfoSection('Yield', recipe.yield),
+              _buildInfoSection('Instructions', recipe.instructions),
             ],
           ),
         ),
