@@ -4,7 +4,7 @@ import 'bread_recipe.dart';
 class BreadRecipeDisplay extends StatelessWidget {
   final BreadRecipe recipe;
 
-  BreadRecipeDisplay({required this.recipe});
+  const BreadRecipeDisplay({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
