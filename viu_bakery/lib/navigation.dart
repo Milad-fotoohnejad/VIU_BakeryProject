@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/search_page.dart';
+import 'login_signup_page.dart';
 
 class TopNavigationBar extends StatelessWidget {
   @override
@@ -38,7 +39,15 @@ class TopNavigationBar extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => SearchPage()),
                       );
                     }),
-                _buildNavItem(title: 'Sign In', onTap: () {}),
+                _buildNavItem(
+                    title: 'Sign In',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginSignupPage()),
+                      );
+                    }),
               ],
             ),
           ),
