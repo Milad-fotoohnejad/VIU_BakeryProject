@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:viu_bakery/home_page.dart';
 import 'package:viu_bakery/navigation.dart';
 import 'login_signup_page.dart';
+import 'recipe_upload_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
+      routes: {
+        '/upload': (context) => RecipeUploadPage(),
+      },
     );
   }
 }
