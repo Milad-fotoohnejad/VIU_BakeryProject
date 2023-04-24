@@ -23,43 +23,115 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       Uint8List fileBytes = result.files.first.bytes!;
       var excel = Excel.decodeBytes(fileBytes);
 
-      List<Map<String, dynamic>> jsonArray = [];
+      Map<String, dynamic> recipe = {
+        "category": "",
+        "yield": 0,
+        "ddt": 0,
+        "name": "",
+        "scalingWeight": 0,
+        "formula": [],
+        "method": []
+      };
 
       for (var table in excel.tables.keys) {
         var sheet = excel.tables[table];
-        List<String> headers = [];
 
-        for (int rowIndex = 0; rowIndex < sheet!.maxRows; rowIndex++) {
-          if (rowIndex == 0) {
-            for (int colIndex = 0; colIndex < sheet.maxCols; colIndex++) {
-              headers.add(sheet
-                      .cell(CellIndex.indexByColumnRow(
-                          columnIndex: colIndex, rowIndex: rowIndex))
-                      .value
-                      ?.toString() ??
-                  "");
-            }
-          } else {
-            Map<String, dynamic> jsonObject = {};
+        // Extracting Recipe Details
+        recipe["category"] = sheet!
+                .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+                .value
+                ?.toString() ??
+            "";
+        recipe["yield"] = int.tryParse(sheet
+                    .cell(
+                        CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 1))
+                    .value
+                    ?.toString() ??
+                "0") ??
+            0;
+        recipe["ddt"] = int.tryParse(sheet
+                    .cell(
+                        CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 2))
+                    .value
+                    ?.toString() ??
+                "0") ??
+            0;
+        recipe["name"] = sheet
+                .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 3))
+                .value
+                ?.toString() ??
+            "";
+        recipe["scalingWeight"] = int.tryParse(sheet
+                    .cell(
+                        CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 4))
+                    .value
+                    ?.toString() ??
+                "0") ??
+            0;
 
-            for (int colIndex = 0; colIndex < sheet.maxCols; colIndex++) {
-              String header = headers[colIndex];
-              String value = sheet
-                      .cell(CellIndex.indexByColumnRow(
-                          columnIndex: colIndex, rowIndex: rowIndex))
-                      .value
-                      ?.toString() ??
-                  "";
-              jsonObject[header] = value;
-            }
-
-            jsonArray.add(jsonObject);
+// Extracting Formula
+        List<Map<String, dynamic>> formula = [];
+        for (int rowIndex = 8; rowIndex <= 13; rowIndex++) {
+          Map<String, dynamic> ingredient = {
+            "ingredient": sheet
+                    .cell(CellIndex.indexByColumnRow(
+                        columnIndex: 0, rowIndex: rowIndex))
+                    .value
+                    ?.toString() ??
+                "",
+            "starter": int.tryParse(sheet
+                        .cell(CellIndex.indexByColumnRow(
+                            columnIndex: 1, rowIndex: rowIndex))
+                        .value
+                        ?.toString() ??
+                    "0") ??
+                0,
+            "dough": int.tryParse(sheet
+                        .cell(CellIndex.indexByColumnRow(
+                            columnIndex: 2, rowIndex: rowIndex))
+                        .value
+                        ?.toString() ??
+                    "0") ??
+                0,
+            "bakersPercentage": int.tryParse(sheet
+                        .cell(CellIndex.indexByColumnRow(
+                            columnIndex: 3, rowIndex: rowIndex))
+                        .value
+                        ?.toString() ??
+                    "0") ??
+                0,
+            "overallFormula": int.tryParse(sheet
+                        .cell(CellIndex.indexByColumnRow(
+                            columnIndex: 4, rowIndex: rowIndex))
+                        .value
+                        ?.toString() ??
+                    "0") ??
+                0
+          };
+          if (ingredient["ingredient"].isNotEmpty) {
+            formula.add(ingredient);
           }
         }
+        recipe["formula"] = formula;
+
+// Extracting Method
+        List<String> method = [];
+        for (int rowIndex = 16; rowIndex <= 21; rowIndex++) {
+          String step = sheet
+                  .cell(CellIndex.indexByColumnRow(
+                      columnIndex: 1, rowIndex: rowIndex))
+                  .value
+                  ?.toString() ??
+              "";
+          if (step.isNotEmpty) {
+            method.add(step);
+          }
+        }
+        recipe["method"] = method;
       }
 
       setState(() {
-        _jsonArray = jsonEncode(jsonArray);
+        _jsonArray = jsonEncode([recipe]);
       });
     }
   }
