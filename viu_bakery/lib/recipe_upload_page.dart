@@ -45,8 +45,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       formula.add({
         'ingredient': rows[i][0] ?? '',
         'starter': rows[i][1] ?? 0,
-        'dough': rows[i][3] ?? 0,
-        'bakersPercentage': rows[i][5] ?? 0,
+        'dough': rows[i][2] ?? 0, // Change this from rows[i][3] to rows[i][2]
+        'bakersPercentage': (rows[i][4] ?? 0) /
+            100, // Change this from rows[i][5] to rows[i][4] and divide by 100
         'overallFormula': rows[i][6] ?? 0,
       });
     }
@@ -56,8 +57,12 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
 
     for (int i = methodStartRow + 1; i < rows.length; i++) {
       if (rows[i] == null) break;
-
-      method.add(rows[i][0] ?? '');
+      // Add a check to see if the row starts with a number followed by a period
+      if (rows[i][0] != null &&
+          rows[i][0] != '' &&
+          RegExp(r'^\d+\.\s').hasMatch(rows[i][0])) {
+        method.add(rows[i][0] ?? '');
+      }
     }
 
     var recipe = {
