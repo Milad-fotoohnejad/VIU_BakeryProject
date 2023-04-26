@@ -194,27 +194,54 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     );
   }
 
-  DataTable _buildDataTable() {
+  Column _buildDataTable() {
     List<dynamic> parsedData = jsonDecode(_jsonArray);
     List<Map<String, dynamic>> formula =
         List<Map<String, dynamic>>.from(parsedData[0]['formula']);
+    String category = parsedData[0]['category'];
+    String name = parsedData[0]['name'];
 
-    return DataTable(
-      columnSpacing: 24,
-      columns: [
-        DataColumn(label: Text('Ingredients')),
-        DataColumn(label: Text('Starter')),
-        DataColumn(label: Text('Dough')),
-      ],
-      rows: formula.map<DataRow>((row) {
-        return DataRow(
-          cells: [
-            DataCell(Text(row['ingredient'])),
-            DataCell(Text(row['starter'].toString())),
-            DataCell(Text(row['dough'].toString())),
+    List<DataRow> rows = formula.map<DataRow>((row) {
+      return DataRow(
+        cells: [
+          DataCell(Text(row['ingredient'])),
+          DataCell(Text(row['starter'].toString())),
+          DataCell(Text(row['dough'].toString())),
+        ],
+      );
+    }).toList();
+
+    return Column(
+      children: [
+        DataTable(
+          columnSpacing: 24,
+          columns: [
+            DataColumn(label: Text('Category: $category')),
+            DataColumn(label: Text('Name: $name')),
           ],
-        );
-      }).toList(),
+          rows: [
+            DataRow(cells: [
+              DataCell(Text('Yield: ${parsedData[0]['yield']}')),
+              DataCell(Text('DDT: ${parsedData[0]['ddt']}')),
+            ]),
+            DataRow(cells: [
+              DataCell(
+                  Text('Scaling Weight: ${parsedData[0]['scalingWeight']}')),
+              DataCell(Text('')),
+            ]),
+          ],
+        ),
+        SizedBox(height: 16),
+        DataTable(
+          columnSpacing: 24,
+          columns: [
+            DataColumn(label: Text('Ingredients')),
+            DataColumn(label: Text('Starter')),
+            DataColumn(label: Text('Dough')),
+          ],
+          rows: rows,
+        ),
+      ],
     );
   }
 
