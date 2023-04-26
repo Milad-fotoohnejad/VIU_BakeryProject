@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
+import 'dart:math';
 
 class RecipeUploadPage extends StatefulWidget {
   @override
@@ -86,6 +87,65 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     }
   }
 
+  Widget _buildTable(String jsonArray) {
+    List<dynamic> data = jsonDecode(jsonArray);
+    List<dynamic> formula = data[0]['formula'];
+    List<dynamic> method = data[0]['method'];
+
+    return Table(
+      border: TableBorder.all(),
+      columnWidths: {
+        0: FlexColumnWidth(1),
+        1: FlexColumnWidth(1),
+      },
+      children: [
+        // Header row
+        TableRow(
+          children: [
+            TableCell(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Ingredients',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+            ),
+            TableCell(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Method',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        ),
+        // Data rows
+        ...List<TableRow>.generate(
+          max(formula.length, method.length),
+          (index) => TableRow(
+            children: [
+              TableCell(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: index < formula.length
+                      ? Text(
+                          '${formula[index]['ingredient']}: ${formula[index]['overallFormula']}')
+                      : SizedBox(),
+                ),
+              ),
+              TableCell(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child:
+                      index < method.length ? Text(method[index]) : SizedBox(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,9 +177,56 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
                     style: TextStyle(fontFamily: 'monospace'),
                   )
                 : Text('No JSON array to display'),
+            SizedBox(height: 16),
+            if (_jsonArray.isNotEmpty) ...[
+              _buildDataTable(),
+              SizedBox(height: 16),
+              Text(
+                'Method:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              _buildMethodList(),
+            ],
           ],
         ),
       ),
+    );
+  }
+
+  DataTable _buildDataTable() {
+    List<dynamic> parsedData = jsonDecode(_jsonArray);
+    List<Map<String, dynamic>> formula =
+        List<Map<String, dynamic>>.from(parsedData[0]['formula']);
+
+    return DataTable(
+      columnSpacing: 24,
+      columns: [
+        DataColumn(label: Text('Ingredients')),
+        DataColumn(label: Text('Starter')),
+        DataColumn(label: Text('Dough')),
+      ],
+      rows: formula.map<DataRow>((row) {
+        return DataRow(
+          cells: [
+            DataCell(Text(row['ingredient'])),
+            DataCell(Text(row['starter'].toString())),
+            DataCell(Text(row['dough'].toString())),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildMethodList() {
+    List<dynamic> parsedData = jsonDecode(_jsonArray);
+    List<String> method = List<String>.from(parsedData[0]['method']);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: method.map<Widget>((item) {
+        return Text(item);
+      }).toList(),
     );
   }
 }
