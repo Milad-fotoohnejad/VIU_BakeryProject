@@ -46,9 +46,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       formula.add({
         'ingredient': rows[i][0] ?? '',
         'starter': rows[i][1] ?? 0,
-        'dough': rows[i][2] ?? 0, // Change this from rows[i][3] to rows[i][2]
-        'bakersPercentage': (rows[i][4] ?? 0) /
-            100, // Change this from rows[i][5] to rows[i][4] and divide by 100
+        'dough': rows[i][3] ?? 0, // Change this from rows[i][2] to rows[i][3]
+        'bakersPercentage': (rows[i][5] ?? 0) /
+            100, // Change this from rows[i][4] to rows[i][5] and divide by 100
         'overallFormula': rows[i][6] ?? 0,
       });
     }
