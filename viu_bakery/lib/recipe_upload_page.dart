@@ -31,52 +31,117 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     var sheet = decoder.tables.values.first;
     var rows = sheet.rows;
 
-    var category = rows[3][0]?.split(': ')[1] ?? '';
-    var yieldValue = rows[3][5] ?? 0;
-    var ddt = int.tryParse(rows[4][4]?.split(': ')[1] ?? '0');
-    var name = rows[5][0]?.split(': ')[1] ?? '';
-    var scalingWeight = int.tryParse(rows[5][4]?.split(': ')[1] ?? '0');
+    bool isNewType =
+        rows[2][2] != null && rows[2][2].toString().contains('Pastry');
+    List<Map<String, dynamic>> recipes = [];
 
-    var formula = <Map<String, dynamic>>[];
+    if (isNewType) {
+      var category = rows[3][0]?.split(': ')[1]?.trim() ?? '';
+      var yieldValue = rows[3][5] ?? 0;
+      var name = rows[5][0]?.split(': ')[1]?.trim() ?? '';
+      var unitWeight = rows[5][4]?.split(': ')[1]?.trim() ?? '';
 
-    for (int i = 10; i < rows.length; i++) {
-      if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null)
-        break;
+      var formula = <Map<String, dynamic>>[];
 
-      formula.add({
-        'ingredient': rows[i][0] ?? '',
-        'starter': rows[i][1] ?? 0,
-        'dough': rows[i][3] ?? 0, // Change this from rows[i][2] to rows[i][3]
-        'bakersPercentage': (rows[i][5] ?? 0) /
-            100, // Change this from rows[i][4] to rows[i][5] and divide by 100
-        'overallFormula': rows[i][6] ?? 0,
-      });
-    }
+      for (int i = 10; i < rows.length; i++) {
+        if (rows[i][0] == 'Total' ||
+            rows[i][0] == 'Method' ||
+            rows[i][0] == null) break;
 
-    int methodStartRow = rows.indexWhere((row) => row[0] == 'Method');
-    var method = <String>[];
-
-    for (int i = methodStartRow + 1; i < rows.length; i++) {
-      if (rows[i] == null) break;
-      // Add a check to see if the row starts with a number followed by a period
-      if (rows[i][0] != null &&
-          rows[i][0] != '' &&
-          RegExp(r'^\d+\.\s').hasMatch(rows[i][0])) {
-        method.add(rows[i][0] ?? '');
+        formula.add({
+          'ingredient': rows[i][0] ?? '',
+          'qty': _parseCellValue(rows[i][1]) ?? 0,
+          'unit': rows[i][2] ?? '',
+          'bakersPercentage': _parseCellValue(rows[i][5]) ?? 0,
+        });
       }
+
+      int totalWeightRow = rows.indexWhere((row) => row[0] == 'Total');
+      int totalMultiplier = _parseCellValue(rows[totalWeightRow][4]);
+
+      int methodStartRow = rows.indexWhere((row) => row[0] == 'Method');
+      var method = <String>[];
+
+      for (int i = methodStartRow + 1; i < rows.length; i++) {
+        if (rows[i] == null) break;
+        if (rows[i][0] != null && rows[i][0] != '') {
+          method.add(rows[i][0] ?? '');
+        }
+      }
+
+      Map<String, dynamic> recipe = {
+        'name':
+            'Vancouver Island University Professional Baking and Pastry Arts Program',
+        'recipe': {
+          'name': name,
+          'category': category,
+          'yield': yieldValue,
+          'unitWeight': unitWeight,
+          'formula': formula,
+          'total': {
+            'weight': _parseCellValue(rows[totalWeightRow][1]),
+            'multiplier': totalMultiplier,
+          },
+          'method': method,
+        },
+      };
+      recipes.add(recipe);
+    } else {
+      var category = rows[3][0]?.split(': ')[1] ?? '';
+      var yieldValue = rows[3][5] ?? 0;
+      var ddt = int.tryParse(rows[4][4]?.split(': ')[1] ?? '0');
+      var name = rows[5][0]?.split(': ')[1] ?? '';
+      var scalingWeight = int.tryParse(rows[5][4]?.split(': ')[1] ?? '0');
+
+      var formula = <Map<String, dynamic>>[];
+
+      for (int i = 10; i < rows.length; i++) {
+        if (rows[i][0] == 'Total' ||
+            rows[i][0] == 'Method' ||
+            rows[i][0] == null) break;
+
+        if (rows[i].length < 7) {
+          rows[i].length = 7;
+          for (int j = rows[i].length; j < 7; j++) {
+            rows[i].add(null);
+          }
+        }
+
+        formula.add({
+          'ingredient': rows[i][0] ?? '',
+          'starter': rows[i][1] ?? 0,
+          'dough': rows[i][3] ?? 0, // Change this from rows[i][2] to rows[i][3]
+          'bakersPercentage': (rows[i][5] ?? 0) /
+              100, // Change this from rows[i][4] to rows[i][5] and divide by 100
+          'overallFormula': rows[i][6] ?? 0,
+        });
+      }
+
+      int methodStartRow = rows.indexWhere((row) => row[0] == 'Method');
+      var method = <String>[];
+
+      for (int i = methodStartRow + 1; i < rows.length; i++) {
+        if (rows[i] == null)
+          break; // Add a check to see if the row starts with a number followed by a period
+        if (rows[i][0] != null &&
+            rows[i][0] != '' &&
+            RegExp(r'^\d+\.\s').hasMatch(rows[i][0])) {
+          method.add(rows[i][0] ?? '');
+        }
+      }
+
+      Map<String, dynamic> recipe = {
+        'category': category,
+        'yield': yieldValue,
+        'ddt': ddt,
+        'name': name,
+        'scalingWeight': scalingWeight,
+        'formula': formula,
+        'method': method,
+      };
+      recipes.add(recipe);
     }
-
-    var recipe = {
-      'category': category,
-      'yield': yieldValue,
-      'ddt': ddt,
-      'name': name,
-      'scalingWeight': scalingWeight,
-      'formula': formula,
-      'method': method,
-    };
-
-    return jsonEncode([recipe]);
+    return jsonEncode(recipes);
   }
 
   dynamic _parseCellValue(dynamic value) {
