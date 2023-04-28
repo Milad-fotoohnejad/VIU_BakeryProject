@@ -70,20 +70,16 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       }
 
       Map<String, dynamic> recipe = {
-        'name':
-            'Vancouver Island University Professional Baking and Pastry Arts Program',
-        'recipe': {
-          'name': name,
-          'category': category,
-          'yield': yieldValue,
-          'unitWeight': unitWeight,
-          'formula': formula,
-          'total': {
-            'weight': _parseCellValue(rows[totalWeightRow][1]),
-            'multiplier': totalMultiplier,
-          },
-          'method': method,
+        'name': name,
+        'category': category,
+        'yield': yieldValue,
+        'unitWeight': unitWeight,
+        'formula': formula,
+        'total': {
+          'weight': _parseCellValue(rows[totalWeightRow][1]),
+          'multiplier': totalMultiplier,
         },
+        'method': method,
       };
       recipes.add(recipe);
     } else {
