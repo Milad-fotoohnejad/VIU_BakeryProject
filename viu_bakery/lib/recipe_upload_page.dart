@@ -89,9 +89,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     } else {
       var category = rows[3][0]?.split(': ')[1] ?? '';
       var yieldValue = rows[3][5] ?? 0;
-      var ddt = int.tryParse(rows[4][4]?.split(': ')[1] ?? '0');
+      var ddt = rows[4][4]?.split(': ')[1] ?? '0';
       var name = rows[5][0]?.split(': ')[1] ?? '';
-      var scalingWeight = int.tryParse(rows[5][4]?.split(': ')[1] ?? '0');
+      var scalingWeight = rows[5][4]?.split(': ')[1] ?? '0';
 
       var formula = <Map<String, dynamic>>[];
 
