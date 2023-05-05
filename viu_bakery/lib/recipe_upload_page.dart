@@ -28,6 +28,22 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     }
   }
 
+  Map<String, String> _parseTitleCell(String cellValue) {
+    final parts = cellValue.split(': ');
+    return {
+      'name': parts[0].trim(),
+      'value': parts.length > 1 ? parts[1].trim() : '',
+    };
+  }
+
+  int _findFirstRowIndex(
+      List<List<dynamic>> rows, bool Function(dynamic) condition) {
+    for (int i = 0; i < rows.length; i++) {
+      if (condition(rows[i][0])) return i;
+    }
+    return -1;
+  }
+
   Map<String, dynamic> _convertPastryToJson(List<List<dynamic>> rows) {
     Map<String, dynamic> recipe = {};
 
@@ -37,40 +53,41 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     for (int i = 0; i < rows.length; i++) {
       if (rows[i][0] != null && rows[i][0].toString().contains('Pastry')) {
         recipe = {
+          'name': rows[5][0].toString().split(': ')[1].trim(),
           'category': rows[3][0].toString().split(': ')[1].trim(),
           'yield': rows[3][5],
-          'name': rows[5][0].toString().split(': ')[1].trim(),
-          'unitWeight': rows[5][4].toString().trim(),
+          'unitWeight': rows[5][4].toString().split(': ')[1].trim(),
         };
 
         List<Map<String, dynamic>> formula = [];
-        for (int j = ingredientsStartRow; j < rows.length; j++) {
-          if (rows[j][0] != null && rows[j][0].toString().contains('TOTAL')) {
-            break;
+        for (int j = ingredientsStartRow; j < methodStartRow - 1; j++) {
+          if (rows[j][0] != null) {
+            formula.add({
+              'ingredients': rows[j][0],
+              'qty': rows[j][1],
+              'unit': rows[j][2],
+              'multiplier': rows[j][3],
+              'bakersPercentage': (rows[j][4] * 100).toDouble()
+            });
           }
-          formula.add({
-            'ingredient': rows[j][0],
-            'qty': rows[j][1],
-            'unit': rows[j][2],
-            'multiplier': rows[j][3],
-            'bakersPercentage': rows[j][5],
-          });
         }
         recipe['formula'] = formula;
 
         List<String> method = [];
         for (int j = methodStartRow; j < rows.length; j++) {
-          if (rows[j][0] == null) {
-            break;
+          if (rows[j][0] != null) {
+            method.add(rows[j][0]);
           }
-          method.add(rows[j][0].toString().trim());
         }
         recipe['method'] = method;
 
-        break;
+        Map<String, dynamic> total = {
+          'weight': rows[ingredientsStartRow - 1][1],
+          'multiplier': rows[ingredientsStartRow - 1][3]
+        };
+        recipe['total'] = total;
       }
     }
-
     return recipe;
   }
 
@@ -97,9 +114,8 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       formula.add({
         'ingredient': rows[i][0] ?? '',
         'starter': rows[i][1] ?? 0,
-        'dough': rows[i][3] ?? 0, // Change this from rows[i][2] to rows[i][3]
-        'bakersPercentage': (rows[i][5] ?? 0) /
-            100, // Change this from rows[i][4] to rows[i][5] and divide by 100
+        'dough': rows[i][3] ?? 0,
+        'bakersPercentage': (rows[i][5] ?? 0) / 100,
         'overallFormula': rows[i][6] ?? 0,
       });
     }
@@ -161,7 +177,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     List<dynamic> method = data[0]['method'];
 
     return Table(
-      border: TableBorder.all(),
+      border: TableBorder.all(color: Colors.grey.shade300),
       columnWidths: {
         0: FlexColumnWidth(1),
         1: FlexColumnWidth(1),
@@ -169,19 +185,24 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       children: [
         // Header row
         TableRow(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+          ),
           children: [
             TableCell(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text('Ingredients',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
             TableCell(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text('Method',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
           ],
@@ -190,6 +211,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
         ...List<TableRow>.generate(
           max(formula.length, method.length),
           (index) => TableRow(
+            decoration: BoxDecoration(
+              color: index % 2 == 0 ? Colors.grey.shade100 : Colors.white,
+            ),
             children: [
               TableCell(
                 child: Padding(
@@ -378,9 +402,22 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: method.map<Widget>((item) {
-        return Text(item);
-      }).toList(),
+      children: method
+          .asMap()
+          .map(
+            (index, item) => MapEntry(
+              index,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.0),
+                child: Text(
+                  '$item',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          )
+          .values
+          .toList(),
     );
   }
 }
