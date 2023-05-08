@@ -13,11 +13,16 @@ class PastryRecipeConverter {
       return DataRow(
         cells: [
           DataCell(Text(row['ingredients'] ?? '')),
-          DataCell(Text(row['qty'].toString() ?? '')),
+          DataCell(Text(row['qty'].toString())),
           DataCell(Text(row['QUnit'] ?? '')),
-          DataCell(Text(row['multiplier'].toString() ?? '')),
+          DataCell(Text(row['multiplier'].toString())),
           DataCell(Text(row['MUnit'] ?? '')),
-          DataCell(Text(row['bakersPercentage'].toString() ?? '')),
+          DataCell(Text(row['bakersPercentage'] != null
+              ? (double.parse(row['bakersPercentage'].replaceAll('%', '')) *
+                          100)
+                      .toString() +
+                  '%'
+              : '')),
         ],
       );
     }).toList();

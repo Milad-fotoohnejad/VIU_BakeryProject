@@ -36,18 +36,19 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
 
     List<Map<String, dynamic>> recipes = [];
 
-    print('Length: ${rows[5][0].length}');
-    for (int i = 0; i < rows[5][0].length; i++) {
-      print('Char $i: ${rows[5][0][i]}');
-    }
+    // print('Length: ${rows[5][0].length}');
+    // for (int i = 0; i < rows[5][0].length; i++) {
+    //   print('Char $i: ${rows[5][0][i]}');
+    // }
 
     String cleanString(String input) {
       // Replace any non-printable ASCII characters
       return input.replaceAll(RegExp(r'[^\x20-\x7E]+'), '');
     }
 
+    print('Length: ${rows[5][0]}');
     if (rows[5][0] != null &&
-        cleanString(rows[5][0].toString()).contains('Name: Pastry Cream')) {
+        cleanString(rows[5][0].toString()).contains('Pastry')) {
       recipes.add(PastryRecipeConverter.convertPastryToJson(rows));
     } else {
       recipes.add(BreadRecipeConverter.convertBreadToJson(rows));
@@ -59,8 +60,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
   Widget _buildDataTable() {
     List<dynamic> parsedData = jsonDecode(_jsonArray);
     String recipeType = parsedData[0]['category'];
+    print(parsedData[0]['category']);
 
-    if (recipeType.contains('Pastry')) {
+    if (recipeType.contains('Creams')) {
       print('Pastry Recipe Detected');
       return PastryRecipeConverter.buildPastryDataTable(parsedData);
     } else {
