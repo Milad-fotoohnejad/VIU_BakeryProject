@@ -32,12 +32,22 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     var sheet = decoder.tables.values.first;
     var rows = sheet.rows;
 
-    bool pastryType = rows[1]
-        .any((cell) => cell != null && cell.toString().contains('Pastry'));
+    // bool pastryType = rows[2][0]?.toString().contains('Pastry') ?? false;
 
     List<Map<String, dynamic>> recipes = [];
 
-    if (pastryType) {
+    print('Length: ${rows[5][0].length}');
+    for (int i = 0; i < rows[5][0].length; i++) {
+      print('Char $i: ${rows[5][0][i]}');
+    }
+
+    String cleanString(String input) {
+      // Replace any non-printable ASCII characters
+      return input.replaceAll(RegExp(r'[^\x20-\x7E]+'), '');
+    }
+
+    if (rows[5][0] != null &&
+        cleanString(rows[5][0].toString()).contains('Name: Pastry Cream')) {
       recipes.add(PastryRecipeConverter.convertPastryToJson(rows));
     } else {
       recipes.add(BreadRecipeConverter.convertBreadToJson(rows));
@@ -51,8 +61,10 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     String recipeType = parsedData[0]['category'];
 
     if (recipeType.contains('Pastry')) {
+      print('Pastry Recipe Detected');
       return PastryRecipeConverter.buildPastryDataTable(parsedData);
     } else {
+      print('Bread Recipe Detected');
       return BreadRecipeConverter.buildBreadDataTable(parsedData);
     }
   }

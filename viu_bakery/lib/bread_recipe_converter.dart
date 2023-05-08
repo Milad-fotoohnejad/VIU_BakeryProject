@@ -11,7 +11,7 @@ class BreadRecipeConverter {
     List<DataRow> rows = formula.map<DataRow>((row) {
       return DataRow(
         cells: [
-          DataCell(Text(row['ingredient'])),
+          DataCell(Text(row['ingredient'] ?? '')),
           DataCell(Text(row['starter'].toString())),
           DataCell(Text(row['dough'].toString())),
         ],
@@ -65,7 +65,7 @@ class BreadRecipeConverter {
       if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null)
         break;
 
-      if (rows[i].length < 7) {
+      if (rows[i] != null && rows[i].length < 7) {
         rows[i].length = 7;
         for (int j = rows[i].length; j < 7; j++) {
           rows[i].add(null);

@@ -7,17 +7,17 @@ class PastryRecipeConverter {
     String category = parsedData[0]['category'];
     String name = parsedData[0]['name'];
     String yieldValue = parsedData[0]['yield'].toString();
-    String unitWeight = parsedData[0]['unitWeight'].toString();
+    String unitWeight = parsedData[0]['unitWeight']?.toString() ?? '';
 
     List<DataRow> rows = formula.map<DataRow>((row) {
       return DataRow(
         cells: [
-          DataCell(Text(row['ingredients'])),
-          DataCell(Text(row['qty'].toString())),
-          DataCell(Text(row['QUnit'])),
-          DataCell(Text(row['multiplier'].toString())),
-          DataCell(Text(row['MUnit'])),
-          DataCell(Text(row['bakersPercentage'].toString())),
+          DataCell(Text(row['ingredients'] ?? '')),
+          DataCell(Text(row['qty'].toString() ?? '')),
+          DataCell(Text(row['QUnit'] ?? '')),
+          DataCell(Text(row['multiplier'].toString() ?? '')),
+          DataCell(Text(row['MUnit'] ?? '')),
+          DataCell(Text(row['bakersPercentage'].toString() ?? '')),
         ],
       );
     }).toList();
@@ -63,25 +63,39 @@ class PastryRecipeConverter {
     for (int i = 0; i < rows.length; i++) {
       if (rows[i][0] != null && rows[i][0].toString().contains('Pastry')) {
         recipe = {
-          'name': rows[5][0].toString().split(': ')[1].trim(),
-          'category': rows[3][0].toString().split(': ')[1].trim(),
-          'yield': rows[3][5],
-          'unitWeight': rows[5][4].toString().split(': ')[1].trim(),
+          'name': rows[5][0].toString().split(': ').length > 1
+              ? rows[5][0].toString().split(': ')[1].trim()
+              : '',
+          'category': rows[3][0].toString().split(': ').length > 1
+              ? rows[3][0].toString().split(': ')[1].trim()
+              : '',
+          'yield': rows[3][5] ?? 0,
+          'unitWeight': rows[5][4].toString().split(': ').length > 1
+              ? rows[5][4].toString().split(': ')[1].trim()
+              : '',
         };
 
         List<Map<String, dynamic>> formula = [];
         for (int j = ingredientsStartRow; j < methodStartRow - 1; j++) {
           if (rows[j][0] != null) {
+            String bakersPercentage = '0%';
+            if (rows[j][4] != null &&
+                double.tryParse(rows[j][4].toString()) != null) {
+              bakersPercentage =
+                  (double.parse(rows[j][4].toString()) * 100).toString() + '%';
+            }
+
             formula.add({
-              'ingredients': rows[j][0],
-              'qty': rows[j][1],
-              'QUnit': rows[j][2],
-              'multiplier': rows[j][3],
-              'MUnit': rows[j][4],
-              'bakersPercentage': (rows[j][4] * 100).toDouble()
+              'ingredients': rows[j][0] ?? '',
+              'qty': rows[j][1] ?? 0,
+              'QUnit': rows[j][2] ?? '',
+              'multiplier': rows[j][3] ?? 0,
+              'MUnit': rows[j][4] ?? '',
+              'bakersPercentage': bakersPercentage,
             });
           }
         }
+
         recipe['formula'] = formula;
 
         List<String> method = [];
@@ -93,8 +107,8 @@ class PastryRecipeConverter {
         recipe['method'] = method;
 
         Map<String, dynamic> total = {
-          'weight': rows[ingredientsStartRow - 1][1],
-          'multiplier': rows[ingredientsStartRow - 1][3]
+          'weight': rows[ingredientsStartRow - 1][1] ?? 0,
+          'multiplier': rows[ingredientsStartRow - 1][3] ?? 0
         };
         recipe['total'] = total;
       }
