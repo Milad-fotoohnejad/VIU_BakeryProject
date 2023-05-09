@@ -17,12 +17,7 @@ class PastryRecipeConverter {
           DataCell(Text(row['QUnit'] ?? '')),
           DataCell(Text(row['multiplier'].toString())),
           DataCell(Text(row['MUnit'] ?? '')),
-          DataCell(Text(row['bakersPercentage'] != null
-              ? (double.parse(row['bakersPercentage'].replaceAll('%', '')) *
-                          100)
-                      .toString() +
-                  '%'
-              : '')),
+          DataCell(Text(row['bakersPercentage'] ?? '')),
         ],
       );
     }).toList();
@@ -84,10 +79,11 @@ class PastryRecipeConverter {
         for (int j = ingredientsStartRow; j < methodStartRow - 1; j++) {
           if (rows[j][0] != null) {
             String bakersPercentage = '0%';
-            if (rows[j][4] != null &&
-                double.tryParse(rows[j][4].toString()) != null) {
-              bakersPercentage =
-                  (double.parse(rows[j][4].toString()) * 100).toString() + '%';
+            if (rows[j][5] != null &&
+                double.tryParse(rows[j][5].toString()) != null) {
+              bakersPercentage = (double.parse(rows[j][5].toString()) * 100)
+                      .toStringAsFixed(2) +
+                  '%';
             }
 
             formula.add({
