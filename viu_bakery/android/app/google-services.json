@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "868989986714",
+    "project_id": "bakeryproject-6f924",
+    "storage_bucket": "bakeryproject-6f924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868989986714:android:2d1ae17ad207acd63b3c23",
+        "android_client_info": {
+          "package_name": "bakery.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868989986714-562pi5odu855npk6nej8lng4ikl9emfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNK2kbMhAk43bds_W7_FnBaYqXp5E24zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868989986714-562pi5odu855npk6nej8lng4ikl9emfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868989986714:android:b462ab3a47070c403b3c23",
+        "android_client_info": {
+          "package_name": "com.example.viu_bakery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868989986714-562pi5odu855npk6nej8lng4ikl9emfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNK2kbMhAk43bds_W7_FnBaYqXp5E24zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868989986714-562pi5odu855npk6nej8lng4ikl9emfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
