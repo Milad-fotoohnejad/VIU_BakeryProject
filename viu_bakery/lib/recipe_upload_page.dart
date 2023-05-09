@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 import 'bread_recipe_converter.dart';
 import 'pastry_recipe_converter.dart';
+import 'package:flutter/services.dart';
 
 class RecipeUploadPage extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       Uint8List fileBytes = result.files.single.bytes!;
       List<Map<String, dynamic>> jsonArray = _convertExcelToJson(fileBytes);
       setState(() {
-        _jsonArray = jsonEncode(jsonArray);
+        // using JsonEncoder with indentation to pretty print the JSON array
+        _jsonArray = JsonEncoder.withIndent('  ').convert(jsonArray);
       });
     }
   }
@@ -32,14 +34,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     var sheet = decoder.tables.values.first;
     var rows = sheet.rows;
 
-    // bool pastryType = rows[2][0]?.toString().contains('Pastry') ?? false;
-
     List<Map<String, dynamic>> recipes = [];
-
-    // print('Length: ${rows[5][0].length}');
-    // for (int i = 0; i < rows[5][0].length; i++) {
-    //   print('Char $i: ${rows[5][0][i]}');
-    // }
 
     String cleanString(String input) {
       // Replace any non-printable ASCII characters
@@ -77,35 +72,80 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       appBar: AppBar(
         title: Text('Upload Recipe Excel'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            TextButton(
-              onPressed: _pickExcelFile,
-              child: Text('Select Excel File'),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor,
+            Container(
+              margin: EdgeInsets.only(right: 16),
+              child: Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: _pickExcelFile,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Select Excel File',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      style: TextButton.styleFrom(
+                        primary: Color.fromARGB(255, 66, 66, 66),
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Generated JSON Array:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    _jsonArray.isNotEmpty
+                        ? Expanded(
+                            child: Card(
+                              color: Colors.orange[100],
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: SingleChildScrollView(
+                                  child: SelectableText(
+                                    _jsonArray,
+                                    style: TextStyle(fontFamily: 'monospace'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Text(
+                            'No JSON array to display',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18,
+                            ),
+                          ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Generated JSON Array:',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            SizedBox(width: 16),
+            Expanded(
+              flex: 3,
+              child: _jsonArray.isNotEmpty
+                  ? Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: _buildDataTable(),
+                        ),
+                      ),
+                    )
+                  : Container(),
             ),
-            SizedBox(height: 8),
-            _jsonArray.isNotEmpty
-                ? SelectableText(
-                    _jsonArray,
-                    style: TextStyle(fontFamily: 'monospace'),
-                  )
-                : Text('No JSON array to display'),
-            SizedBox(height: 16),
-            if (_jsonArray.isNotEmpty) ...[
-              _buildDataTable(),
-            ],
           ],
         ),
       ),

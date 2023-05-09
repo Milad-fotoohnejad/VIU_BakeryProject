@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class BreadRecipeConverter {
-  static Column buildBreadDataTable(List<dynamic> parsedData) {
+  static Widget buildBreadDataTable(List<dynamic> parsedData) {
     List<Map<String, dynamic>> formula =
         List<Map<String, dynamic>>.from(parsedData[0]['formula']);
     String category = parsedData[0]['category'];
     String name = parsedData[0]['name'];
+    String yieldValue = parsedData[0]['yield'].toString();
+    String ddt = parsedData[0]['ddt'].toString();
 
     List<DataRow> rows = formula.map<DataRow>((row) {
       return DataRow(
@@ -18,37 +20,46 @@ class BreadRecipeConverter {
       );
     }).toList();
 
-    return Column(
-      children: [
-        DataTable(
-          columnSpacing: 24,
-          columns: [
-            DataColumn(label: Text('Category: $category')),
-            DataColumn(label: Text('Name: $name')),
-          ],
-          rows: [
-            DataRow(cells: [
-              DataCell(Text('Yield: ${parsedData[0]['yield']}')),
-              DataCell(Text('DDT: ${parsedData[0]['ddt']}')),
-            ]),
-            DataRow(cells: [
-              DataCell(
-                  Text('Scaling Weight: ${parsedData[0]['scalingWeight']}')),
-              DataCell(Text('')),
-            ]),
+    List<Widget> methodWidgets = parsedData[0]['method']
+        .map<Widget>((method) => Text(method, style: TextStyle(fontSize: 16)))
+        .toList();
+
+    return Card(
+      color: Colors.orange[100],
+      elevation: 2.0,
+      margin: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text('Category: $category',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text('Name: $name',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Divider(thickness: 2),
+            SizedBox(height: 8),
+            Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 8),
+            Text('DDT: $ddt', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 8),
+            Divider(thickness: 2),
+            SizedBox(height: 8),
+            DataTable(
+              columnSpacing: 24,
+              columns: [
+                DataColumn(label: Text('Ingredients')),
+                DataColumn(label: Text('Starter')),
+                DataColumn(label: Text('Dough')),
+              ],
+              rows: rows,
+            ),
+            Divider(thickness: 2),
+            SizedBox(height: 16),
+            Column(children: methodWidgets),
           ],
         ),
-        SizedBox(height: 16),
-        DataTable(
-          columnSpacing: 24,
-          columns: [
-            DataColumn(label: Text('Ingredients')),
-            DataColumn(label: Text('Starter')),
-            DataColumn(label: Text('Dough')),
-          ],
-          rows: rows,
-        ),
-      ],
+      ),
     );
   }
 

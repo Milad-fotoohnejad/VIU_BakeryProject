@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PastryRecipeConverter {
-  static Column buildPastryDataTable(List<dynamic> parsedData) {
+  static Widget buildPastryDataTable(List<dynamic> parsedData) {
     List<Map<String, dynamic>> formula =
         List<Map<String, dynamic>>.from(parsedData[0]['formula']);
     String category = parsedData[0]['category'];
     String name = parsedData[0]['name'];
     String yieldValue = parsedData[0]['yield'].toString();
     String unitWeight = parsedData[0]['unitWeight']?.toString() ?? '';
+    List<String> method = List<String>.from(parsedData[0]['method']);
 
     List<DataRow> rows = formula.map<DataRow>((row) {
       return DataRow(
@@ -22,35 +23,49 @@ class PastryRecipeConverter {
       );
     }).toList();
 
-    return Column(
-      children: [
-        DataTable(
-          columnSpacing: 24,
-          columns: [
-            DataColumn(label: Text('Category: $category')),
-            DataColumn(label: Text('Name: $name')),
-          ],
-          rows: [
-            DataRow(cells: [
-              DataCell(Text('Yield: $yieldValue')),
-              DataCell(Text('Unit Weight: $unitWeight')),
-            ]),
+    List<Widget> methodWidgets = method.map<Widget>((item) {
+      return Text(item);
+    }).toList();
+
+    return Card(
+      color: Colors.orange[100],
+      elevation: 2.0,
+      margin: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text('Category: $category',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text('Name: $name',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Divider(thickness: 2),
+            SizedBox(height: 8),
+            Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 8),
+            Text('Unit Weight: $unitWeight', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 8),
+            Divider(thickness: 2),
+            SizedBox(height: 8),
+            DataTable(
+              columnSpacing: 24,
+              columns: [
+                DataColumn(label: Text('Ingredients')),
+                DataColumn(label: Text('Qty')),
+                DataColumn(label: Text('Unit')),
+                DataColumn(label: Text('Multiplier')),
+                DataColumn(label: Text('Unit')),
+                DataColumn(label: Text('Bakers Percentage')),
+              ],
+              rows: rows,
+            ),
+            Divider(thickness: 2),
+            SizedBox(height: 16),
+            Column(children: methodWidgets),
           ],
         ),
-        SizedBox(height: 16),
-        DataTable(
-          columnSpacing: 24,
-          columns: [
-            DataColumn(label: Text('Ingredients')),
-            DataColumn(label: Text('Qty')),
-            DataColumn(label: Text('Unit')),
-            DataColumn(label: Text('Multiplier')),
-            DataColumn(label: Text('Unit')),
-            DataColumn(label: Text('Bakers Percentage')),
-          ],
-          rows: rows,
-        ),
-      ],
+      ),
     );
   }
 
