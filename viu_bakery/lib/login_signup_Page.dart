@@ -1,12 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginSignupPage extends StatefulWidget {
   @override
   _LoginSignupPageState createState() => _LoginSignupPageState();
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+TextEditingController _emailController = TextEditingController();
+TextEditingController _passwordController = TextEditingController();
+
 class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLogin = true;
+
+  void _login(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // User is logged in
+      // Navigate to home page or another page
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  void _signup(String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // User is signed up
+      // Navigate to home page or another page
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void _toggleLoginSignup() {
     setState(() {
@@ -52,6 +94,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 ),
                 SizedBox(height: 16),
                 TextField(
+                  controller: _emailController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Email',
@@ -61,6 +104,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 ),
                 SizedBox(height: 8),
                 TextField(
+                  controller: _passwordController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -101,7 +145,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         padding: EdgeInsets.symmetric(vertical: 16),
         textStyle: TextStyle(fontSize: 18),
       ),
-      onPressed: onPressed,
+      onPressed: () {
+        String email = _emailController.text;
+        String password = _passwordController.text;
+        if (_isLogin) {
+          _login(email, password);
+        } else {
+          _signup(email, password);
+        }
+      },
       child: Text(label),
     );
   }

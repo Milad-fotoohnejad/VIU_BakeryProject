@@ -118,19 +118,22 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
                         ),
                       ),
                       if (_filePicked) // Add this condition
-                        TextButton(
-                          onPressed:
-                              uploadDataToFirestore, // call upload function when this button is pressed
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              'Upload Data to Database',
-                              style: TextStyle(fontSize: 20),
+                        Container(
+                          margin: EdgeInsets.only(top: 16),
+                          child: TextButton(
+                            onPressed:
+                                uploadDataToFirestore, // call upload function when this button is pressed
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                'Upload Data to Database',
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
-                          ),
-                          style: TextButton.styleFrom(
-                            primary: Color.fromARGB(255, 66, 66, 66),
-                            backgroundColor: Theme.of(context).primaryColor,
+                            style: TextButton.styleFrom(
+                              primary: Color.fromARGB(255, 66, 66, 66),
+                              backgroundColor: Colors.yellow[300],
+                            ),
                           ),
                         ),
                       SizedBox(height: 16),
