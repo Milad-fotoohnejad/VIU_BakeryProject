@@ -110,83 +110,86 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../background-assets/background.jpg'),
+            image: AssetImage('../background-assets/login.jpg'),
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey[800],
-            ),
-            width: 450,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Text(
-                    _isLogin ? 'Login' : 'Sign up',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+        child: Opacity(
+          opacity: 0.9,
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey[900],
+              ),
+              width: 450,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Text(
+                      _isLogin ? 'Login' : 'Sign up',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange[300],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16),
-                if (!_isLogin) ...[
-                  // Name field only appears for Sign Up
+                  SizedBox(height: 16),
+                  if (!_isLogin) ...[
+                    // Name field only appears for Sign Up
+                    TextField(
+                      controller: _nameController,
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                  SizedBox(height: 16),
                   TextField(
-                    controller: _nameController,
+                    controller: _emailController,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      labelText: 'Name',
+                      labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.white),
+                      fillColor: Colors.white,
                     ),
                   ),
                   SizedBox(height: 8),
-                ],
-                SizedBox(height: 16),
-                TextField(
-                  controller: _emailController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.white),
-                    fillColor: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: _passwordController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                  obscureText: true,
-                ),
-                SizedBox(height: 16),
-                _buildButton(
-                  label: _isLogin ? 'Login' : 'Sign up',
-                  onPressed: () {
-                    // Implement login or sign up logic
-                  },
-                ),
-                SizedBox(height: 16),
-                TextButton(
-                  onPressed: _toggleLoginSignup,
-                  child: Text(
-                    _isLogin
-                        ? 'Don\'t have an account? Sign up'
-                        : 'Already have an account? Login',
+                  TextField(
+                    controller: _passwordController,
                     style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                    obscureText: true,
                   ),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  _buildButton(
+                    label: _isLogin ? 'Login' : 'Sign up',
+                    onPressed: () {
+                      // Implement login or sign up logic
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  TextButton(
+                    onPressed: _toggleLoginSignup,
+                    child: Text(
+                      _isLogin
+                          ? 'Don\'t have an account? Sign up'
+                          : 'Already have an account? Login',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

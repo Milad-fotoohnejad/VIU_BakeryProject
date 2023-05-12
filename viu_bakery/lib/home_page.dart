@@ -199,55 +199,58 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey[800],
-            ),
-            width: 450,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Text(
-                    'Recipes Section',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+        child: Opacity(
+          opacity: 0.9,
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey[900],
+              ),
+              width: 450,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Text(
+                      'Recipes Section',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16),
-                _buildButton(
-                  label: 'Add a Recipe',
-                  onPressed: _toggleAddSubMenus,
-                ),
-                AnimatedCrossFade(
-                  firstChild: SizedBox.shrink(),
-                  secondChild: _buildAddSubMenu(),
-                  crossFadeState: _showAddSubMenus
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 300),
-                ),
-                SizedBox(height: 16),
-                _buildButton(
-                  label: 'View Recipes',
-                  onPressed: _toggleViewSubMenus,
-                ),
-                AnimatedCrossFade(
-                  firstChild: SizedBox.shrink(),
-                  secondChild: _buildViewSubMenu(),
-                  crossFadeState: _showViewSubMenus
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 300),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  _buildButton(
+                    label: 'Add a Recipe',
+                    onPressed: _toggleAddSubMenus,
+                  ),
+                  AnimatedCrossFade(
+                    firstChild: SizedBox.shrink(),
+                    secondChild: _buildAddSubMenu(),
+                    crossFadeState: _showAddSubMenus
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: Duration(milliseconds: 300),
+                  ),
+                  SizedBox(height: 16),
+                  _buildButton(
+                    label: 'View Recipes',
+                    onPressed: _toggleViewSubMenus,
+                  ),
+                  AnimatedCrossFade(
+                    firstChild: SizedBox.shrink(),
+                    secondChild: _buildViewSubMenu(),
+                    crossFadeState: _showViewSubMenus
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: Duration(milliseconds: 300),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
