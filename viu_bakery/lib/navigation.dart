@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:viu_bakery/search_page.dart';
 import 'login_signup_page.dart';
 import 'recipe_upload_page.dart';
+import 'my_account_page.dart';
 
 class TopNavigationBar extends StatelessWidget {
   @override
@@ -49,6 +50,15 @@ class TopNavigationBar extends StatelessWidget {
                             builder: (context) => LoginSignupPage()),
                       );
                     }),
+                _buildNavItem(
+                  title: 'My Account',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyAccountPage()),
+                    );
+                  },
+                ),
                 _buildNavItem(
                     title: 'Upload Recipe Excel',
                     onTap: () {

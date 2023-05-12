@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart';
+import 'my_account_page.dart';
 
 class LoginSignupPage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class LoginSignupPage extends StatefulWidget {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 TextEditingController _emailController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
+TextEditingController _nameController = TextEditingController();
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLogin = true;
@@ -20,31 +23,72 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         password: password,
       );
       // User is logged in
-      // Navigate to home page or another page
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Successfully logged in')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
     } on FirebaseAuthException catch (e) {
+      String message;
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        message = 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        message = 'Wrong password provided for that user.';
+      } else {
+        message = 'An unexpected error occurred. Please try again later.';
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 
-  void _signup(String email, String password) async {
+  void _signup(String email, String password, String name) async {
+    // Regex pattern to check if the password is 8 characters or more,
+    // contains at least 1 uppercase letter, 1 lowercase letter,
+    // 1 number, and 1 special character.
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regex = RegExp(pattern);
+
+    if (!regex.hasMatch(password)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.')),
+      );
+      return;
+    }
+
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await userCredential.user!.updateDisplayName(name);
       // User is signed up
-      // Navigate to home page or another page
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Successfully signed up')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
     } on FirebaseAuthException catch (e) {
+      String message;
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        message = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        message = 'The account already exists for that email.';
+      } else {
+        message = 'An unexpected error occurred. Please try again later.';
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     } catch (e) {
       print(e);
     }
@@ -92,6 +136,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     ),
                   ),
                 ),
+                SizedBox(height: 16),
+                if (!_isLogin) ...[
+                  // Name field only appears for Sign Up
+                  TextField(
+                    controller: _nameController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                ],
                 SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
@@ -151,7 +208,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         if (_isLogin) {
           _login(email, password);
         } else {
-          _signup(email, password);
+          String name = _nameController.text;
+          _signup(email, password, name);
         }
       },
       child: Text(label),
