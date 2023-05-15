@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bread_recipe.dart';
+import 'bread_recipe_model.dart';
 
 class BreadRecipeDisplay extends StatelessWidget {
   final BreadRecipe recipe;
@@ -35,8 +35,13 @@ class BreadRecipeDisplay extends StatelessWidget {
                 ),
                 child: Table(
                   columnWidths: {
-                    0: FlexColumnWidth(2),
+                    0: FlexColumnWidth(1),
                     1: FlexColumnWidth(1),
+                    2: FlexColumnWidth(1),
+                    3: FlexColumnWidth(1),
+                    4: FlexColumnWidth(1),
+                    5: FlexColumnWidth(1),
+                    6: FlexColumnWidth(1),
                   },
                   border: TableBorder.all(color: Colors.lightBlue[100]!),
                   children: [
@@ -46,14 +51,24 @@ class BreadRecipeDisplay extends StatelessWidget {
                       ),
                       children: [
                         _buildTableHeader('Ingredient Name'),
-                        _buildTableHeader('Ingredient Amount'),
+                        _buildTableHeader('Starter Amount'),
+                        _buildTableHeader('Starter Unit'),
+                        _buildTableHeader('Dough Amount'),
+                        _buildTableHeader('Dough Unit'),
+                        _buildTableHeader('Bakers Percentage'),
+                        _buildTableHeader('Formula'),
                       ],
                     ),
                     ...recipe.ingredients.map((ingredient) {
                       return TableRow(
                         children: [
                           _buildTableCell(ingredient.name),
-                          _buildTableCell(ingredient.amount),
+                          _buildTableCell(ingredient.starterAmount),
+                          _buildTableCell(ingredient.starterUnit),
+                          _buildTableCell(ingredient.doughAmount),
+                          _buildTableCell(ingredient.doughUnit),
+                          _buildTableCell(ingredient.bakersPercentage),
+                          _buildTableCell(ingredient.formula),
                         ],
                       );
                     }).toList(),
@@ -61,11 +76,11 @@ class BreadRecipeDisplay extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24),
-              _buildInfoSection('Starter', recipe.starter),
-              _buildInfoSection('Poolish', recipe.poolish),
-              _buildInfoSection('Dough', recipe.dough),
-              _buildInfoSection("Bakers' Percentage", recipe.bakersPercentage),
-              _buildInfoSection('Formula', recipe.formula),
+              Text(
+                'Method',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              // Add your method data here
             ],
           ),
         ),
@@ -93,37 +108,6 @@ class BreadRecipeDisplay extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(fontSize: 18),
-      ),
-    );
-  }
-
-  Widget _buildInfoSection(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
-            ),
-          ),
-          SizedBox(height: 4),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-            ),
-            padding: EdgeInsets.all(12),
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
       ),
     );
   }

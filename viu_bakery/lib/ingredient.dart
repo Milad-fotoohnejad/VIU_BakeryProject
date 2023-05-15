@@ -1,13 +1,31 @@
 class Ingredient {
-  final String name;
-  final String amount;
+  String name;
+  String starterAmount;
+  String starterUnit;
+  String doughAmount;
+  String doughUnit;
+  String bakersPercentage;
+  String formula;
 
-  Ingredient(this.name, this.amount);
+  Ingredient({
+    required this.name,
+    required this.starterAmount,
+    required this.starterUnit,
+    required this.doughAmount,
+    required this.doughUnit,
+    required this.bakersPercentage,
+    required this.formula,
+  });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'amount': amount,
+      'starterAmount': starterAmount,
+      'starterUnit': starterUnit,
+      'doughAmount': doughAmount,
+      'doughUnit': doughUnit,
+      'bakersPercentage': bakersPercentage,
+      'formula': formula,
     };
   }
 }
