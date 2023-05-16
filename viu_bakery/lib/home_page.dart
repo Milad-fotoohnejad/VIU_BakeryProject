@@ -9,6 +9,7 @@ import 'package:viu_bakery/cookie_recipe_form.dart';
 import 'package:viu_bakery/cookie_recipe.dart';
 import 'package:viu_bakery/cookies_recipe_display.dart';
 import 'navigation.dart';
+import 'bread_recipe_table.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -133,17 +134,13 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RecipeDisplayScreen<BreadRecipe>(
-                        recipes: _breadRecipes,
-                        recipeNameGetter: (recipe) => recipe.name,
-                        recipeDisplayBuilder: (recipe) =>
-                            BreadRecipeDisplay(recipe: recipe),
-                      ),
+                      builder: (context) => BreadRecipeDisplay(),
                     ),
                   );
                 },
               ),
             ),
+
             SizedBox(width: 8),
             // Expanded(
             //   child: _buildButton(
