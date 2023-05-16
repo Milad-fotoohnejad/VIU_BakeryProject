@@ -1,5 +1,4 @@
 // bread_recipe_table.dart
-
 import 'package:flutter/material.dart';
 import 'ingredient.dart';
 import 'bread_recipe_model.dart';
@@ -11,42 +10,161 @@ class BreadRecipeTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columns: [
-          DataColumn(label: Text('Name')),
-          DataColumn(label: Text('Yield')),
-          DataColumn(label: Text('DDT')),
-          DataColumn(label: Text('Scaling Weight')),
-          DataColumn(label: Text('Ingredients')),
-          DataColumn(label: Text('Method')),
-        ],
-        rows: [
-          DataRow(
-            cells: [
-              DataCell(Text(recipe.name)),
-              DataCell(Text(recipe.yeild)),
-              DataCell(Text(recipe.ddt)),
-              DataCell(Text(recipe.scalingWeight)),
-              DataCell(_buildIngredientsCell(recipe.ingredients)),
-              DataCell(Text(recipe.method)),
-            ],
+    return Container(
+      margin: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+          color: Colors.orange[100],
+          border: Border.all(color: Colors.black, width: 1.0),
+          borderRadius: BorderRadius.circular(8.0)),
+      padding: EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black, width: 1.0),
+                borderRadius: BorderRadius.circular(8.0)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRow('Name:', recipe.name),
+                _buildRow('Category:', recipe.category),
+                _buildRow('Yield:', recipe.yeild),
+                _buildRow('DDT:', recipe.ddt),
+                _buildRow('Scaling Weight:', recipe.scalingWeight),
+                Container(
+                  margin: EdgeInsets.only(top: 12.0),
+                  child: Text('Ingredients:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                          decoration: TextDecoration.none)),
+                ),
+                _buildIngredientsTable(recipe.ingredients),
+                Text('Method:',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black,
+                        decoration: TextDecoration.none)),
+                _buildMethodRow(recipe.method.split('\n')),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  // This function is used to create a Widget that can display a list of ingredients in a single cell.
-  Widget _buildIngredientsCell(List<Ingredient> ingredients) {
+  Widget _buildRow(String label, String value) {
     return Container(
-      child: Column(
-        children: ingredients.map((ingredient) {
-          return Text(
-            '${ingredient.name} - ${ingredient.starterAmount} ${ingredient.starterUnit} - ${ingredient.doughAmount} ${ingredient.doughUnit} - ${ingredient.bakersPercentage} - ${ingredient.formula}',
-          );
-        }).toList(),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Row(
+          children: [
+            Expanded(
+                child: Text(label,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                        decoration: TextDecoration.none))),
+            Expanded(
+                child: Text(value,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      decoration: TextDecoration.none,
+                    ))),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIngredientsTable(List<Ingredient> ingredients) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          border: TableBorder.all(width: 2.0),
+          columnWidths: {
+            0: FlexColumnWidth(1),
+            1: FlexColumnWidth(1),
+            2: FlexColumnWidth(1),
+            3: FlexColumnWidth(1),
+            4: FlexColumnWidth(1),
+            5: FlexColumnWidth(1),
+            6: FlexColumnWidth(1),
+          },
+          children: [
+            TableRow(
+              children: [
+                _buildTableCell('Name'),
+                _buildTableCell('Starter Amount'),
+                _buildTableCell('Starter Unit'),
+                _buildTableCell('Dough Amount'),
+                _buildTableCell('Dough Unit'),
+                _buildTableCell('Bakers %'),
+                _buildTableCell('Formula'),
+              ],
+            ),
+            ...ingredients.map((ingredient) {
+              return TableRow(
+                children: [
+                  _buildTableCell(ingredient.name),
+                  _buildTableCell('${ingredient.starterAmount}'),
+                  _buildTableCell(ingredient.starterUnit),
+                  _buildTableCell('${ingredient.doughAmount}'),
+                  _buildTableCell(ingredient.doughUnit),
+                  _buildTableCell('${ingredient.bakersPercentage}'),
+                  _buildTableCell(ingredient.formula),
+                ],
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTableCell(String value) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        value,
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+          decoration: TextDecoration.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMethodRow(List<String> methodSteps) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: methodSteps
+              .where((step) => step.trim().isNotEmpty)
+              .map((step) => Text(step,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                  )))
+              .toList(),
+        ),
       ),
     );
   }

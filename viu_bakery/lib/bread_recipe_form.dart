@@ -200,6 +200,8 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
         TextFormField(
           controller: _methodController,
           decoration: InputDecoration(labelText: 'Method'),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
         ),
       ],
     );
