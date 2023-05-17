@@ -38,6 +38,17 @@ class _BreadRecipeDisplayState extends State<BreadRecipeDisplay> {
         );
       }).toList();
 
+      double totalStarterAmount = ingredients.fold(
+        0.0,
+        (prev, element) =>
+            prev + (double.tryParse(element.starterAmount) ?? 0.0),
+      );
+
+      double totalDoughAmount = ingredients.fold(
+        0.0,
+        (prev, element) => prev + (double.tryParse(element.doughAmount) ?? 0.0),
+      );
+
       return BreadRecipe(
         category: doc['category'],
         name: doc['name'],
@@ -46,6 +57,8 @@ class _BreadRecipeDisplayState extends State<BreadRecipeDisplay> {
         scalingWeight: doc['scalingWeight'],
         ingredients: ingredients,
         method: doc['method'],
+        totalStarterAmount: totalStarterAmount,
+        totalDoughAmount: totalDoughAmount,
       );
     }).toList();
 

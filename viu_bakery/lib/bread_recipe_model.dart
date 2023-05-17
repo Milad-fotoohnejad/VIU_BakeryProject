@@ -8,6 +8,8 @@ class BreadRecipe {
   String scalingWeight;
   List<Ingredient> ingredients;
   String method;
+  double totalStarterAmount;
+  double totalDoughAmount;
 
   BreadRecipe({
     required this.category,
@@ -17,6 +19,8 @@ class BreadRecipe {
     required this.scalingWeight,
     required this.ingredients,
     required this.method,
+    this.totalStarterAmount = 0.0,
+    this.totalDoughAmount = 0.0,
   });
 
   Map<String, dynamic> toJson() {
@@ -29,6 +33,8 @@ class BreadRecipe {
       'ingredients':
           ingredients.map((ingredient) => ingredient.toJson()).toList(),
       'method': method,
+      'totalStarterAmount': totalStarterAmount,
+      'totalDoughAmount': totalDoughAmount,
     };
   }
 }

@@ -44,6 +44,7 @@ class BreadRecipeTable extends StatelessWidget {
                           decoration: TextDecoration.none)),
                 ),
                 _buildIngredientsTable(recipe.ingredients),
+                _buildTotalRow(recipe),
                 Text('Method:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -129,6 +130,48 @@ class BreadRecipeTable extends StatelessWidget {
                 ],
               );
             }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTotalRow(BreadRecipe recipe) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Row(
+          children: [
+            Expanded(
+                child: Text('Total Starter Amount:',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                        decoration: TextDecoration.none))),
+            Expanded(
+                child: Text(recipe.totalStarterAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      decoration: TextDecoration.none,
+                    ))),
+            Expanded(
+                child: Text('Total Dough Amount:',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                        decoration: TextDecoration.none))),
+            Expanded(
+                child: Text(recipe.totalDoughAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      decoration: TextDecoration.none,
+                    ))),
           ],
         ),
       ),

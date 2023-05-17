@@ -131,7 +131,10 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
           SizedBox(width: 2),
           Expanded(
             child: TextField(
-              onChanged: (value) => ingredient[1] = value,
+              onChanged: (value) {
+                ingredient[1] = value;
+                setState(() {});
+              },
               decoration: InputDecoration(labelText: 'Starter Amount'),
             ),
           ),
@@ -145,7 +148,10 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
           SizedBox(width: 2),
           Expanded(
             child: TextField(
-              onChanged: (value) => ingredient[3] = value,
+              onChanged: (value) {
+                ingredient[3] = value;
+                setState(() {});
+              },
               decoration: InputDecoration(labelText: 'Dough Amount'),
             ),
           ),
@@ -194,6 +200,28 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
     );
   }
 
+  double calculateTotalStarterAmount() {
+    double totalStarterAmount = 0;
+    for (List<String> ingredient in _ingredients) {
+      String starterAmount = ingredient[1];
+      if (starterAmount.isNotEmpty) {
+        totalStarterAmount += double.tryParse(starterAmount) ?? 0;
+      }
+    }
+    return totalStarterAmount;
+  }
+
+  double calculateTotalDoughAmount() {
+    double totalDoughAmount = 0;
+    for (List<String> ingredient in _ingredients) {
+      String doughAmount = ingredient[3];
+      if (doughAmount.isNotEmpty) {
+        totalDoughAmount += double.tryParse(doughAmount) ?? 0;
+      }
+    }
+    return totalDoughAmount;
+  }
+
   Widget _buildOtherFields() {
     return Column(
       children: [
@@ -219,8 +247,6 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
       _recipe.scalingWeight = _scalingWeightController.text;
       _recipe.method = _methodController.text;
       _recipe.ingredients = _ingredients
-          .where(
-              (ingredient) => ingredient.every((element) => element.isNotEmpty))
           .map((ingredient) => Ingredient(
               name: ingredient[0],
               starterAmount: ingredient[1],
@@ -230,6 +256,9 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
               bakersPercentage: ingredient[5],
               formula: ingredient[6]))
           .toList();
+
+      _recipe.totalStarterAmount = calculateTotalStarterAmount();
+      _recipe.totalDoughAmount = calculateTotalDoughAmount();
 
       Map<String, dynamic> recipeJson = _recipe.toJson();
 
