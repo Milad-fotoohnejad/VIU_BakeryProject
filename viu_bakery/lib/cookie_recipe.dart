@@ -1,4 +1,4 @@
-import 'ingredient.dart';
+import 'bread_ingredient.dart';
 
 class Ingredient {
   final String name;

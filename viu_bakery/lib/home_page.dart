@@ -3,7 +3,7 @@ import 'package:viu_bakery/bread_recipe_model.dart';
 import 'package:viu_bakery/bread_recipe_display.dart';
 import 'package:viu_bakery/bread_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_form.dart';
-import 'package:viu_bakery/pastry_recipe.dart';
+import 'package:viu_bakery/pastry_recipe_model.dart';
 import 'package:viu_bakery/pastry_recipe_display.dart';
 import 'package:viu_bakery/cookie_recipe_form.dart';
 import 'package:viu_bakery/cookie_recipe.dart';
@@ -89,8 +89,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BreadRecipeForm(
-                        onSubmit: _addBreadRecipe,
+                      builder: (context) => PastryRecipeForm(
+                        onSubmit: _addPastryRecipe,
                       ),
                     ),
                   );
@@ -140,26 +140,20 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 },
               ),
             ),
-
             SizedBox(width: 8),
-            // Expanded(
-            //   child: _buildButton(
-            //     label: 'Pastry Recipes',
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => RecipeDisplayScreen<BreadRecipe>(
-            //             recipes: _BreadRecipes,
-            //             recipeNameGetter: (recipe) => recipe.name,
-            //             recipeDisplayBuilder: (recipe) =>
-            //                 BreadRecipeDisplay(recipe: recipe),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
+            Expanded(
+              child: _buildButton(
+                label: 'Pastry Recipes',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PastryRecipeDisplay(),
+                    ),
+                  );
+                },
+              ),
+            ),
             SizedBox(width: 8),
             Expanded(
               child: _buildButton(

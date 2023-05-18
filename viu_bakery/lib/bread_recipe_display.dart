@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'bread_recipe_model.dart';
-import 'ingredient.dart';
+import 'bread_ingredient.dart';
 import 'bread_recipe_table.dart';
 
 class BreadRecipeDisplay extends StatefulWidget {

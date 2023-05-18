@@ -1,130 +1,80 @@
-// import 'package:flutter/material.dart';
-// import 'package:viu_bakery/ingredient.dart';
-// import 'package:viu_bakery/pastry_recipe.dart';
-// import 'Ingredient.dart';
+// Import the required packages and files
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'pastry_recipe_model.dart';
+import 'pastry_ingredient.dart';
+import 'pastry_recipe_table.dart';
 
-// class PastryRecipeDisplay extends StatelessWidget {
-//   final PastryRecipe recipe;
+class PastryRecipeDisplay extends StatefulWidget {
+  @override
+  _PastryRecipeDisplayState createState() => _PastryRecipeDisplayState();
+}
 
-//   PastryRecipeDisplay({required this.recipe});
+class _PastryRecipeDisplayState extends State<PastryRecipeDisplay> {
+  List<PastryRecipe> recipes = [];
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(recipe.name),
-//         backgroundColor: Colors.orange[300],
-//       ),
-//       body: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.grey[300],
-//         ),
-//         child: SingleChildScrollView(
-//           padding: EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               SizedBox(height: 16),
-//               Text(
-//                 'Ingredients',
-//                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 8),
-//               Container(
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(5),
-//                   color: Colors.white,
-//                 ),
-//                 child: Table(
-//                   columnWidths: {
-//                     0: FlexColumnWidth(2),
-//                     1: FlexColumnWidth(1),
-//                   },
-//                   border: TableBorder.all(color: Colors.lightBlue[100]!),
-//                   children: [
-//                     TableRow(
-//                       decoration: BoxDecoration(
-//                         color: Colors.orange[300],
-//                       ),
-//                       children: [
-//                         _buildTableHeader('Ingredient Name'),
-//                         _buildTableHeader('Ingredient Amount'),
-//                       ],
-//                     ),
-//                     ...recipe.ingredients.map((ingredient) {
-//                       return TableRow(
-//                         children: [
-//                           _buildTableCell(ingredient.name),
-//                           _buildTableCell(ingredient.amount),
-//                         ],
-//                       );
-//                     }).toList(),
-//                   ],
-//                 ),
-//               ),
-//               SizedBox(height: 24),
-//               _buildInfoSection('Baking Time', recipe.bakingTime),
-//               _buildInfoSection('Baking Temperature', recipe.bakingTemperature),
-//               _buildInfoSection('Instructions', recipe.instructions),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
-//   Widget _buildTableHeader(String text) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Text(
-//         text,
-//         style: TextStyle(
-//           fontSize: 18,
-//           fontWeight: FontWeight.bold,
-//           color: Colors.grey[800],
-//         ),
-//       ),
-//     );
-//   }
+  Future<void> fetchData() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('formRecipes')
+        .where('category', isEqualTo: 'Pastry')
+        .get();
 
-//   Widget _buildTableCell(String text) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Text(
-//         text,
-//         style: TextStyle(fontSize: 18),
-//       ),
-//     );
-//   }
+    recipes = querySnapshot.docs.map((doc) {
+      List ingredientsData = doc['ingredients'];
+      List<PastryIngredient> ingredients = ingredientsData.map((ingredient) {
+        return PastryIngredient(
+          name: ingredient['name'],
+          qty: ingredient['qty'],
+          qtyUnit: ingredient['qtyUnit'],
+          multiplier: ingredient['multiplier'],
+          multiplierUnit: ingredient['multiplierUnit'],
+          bakersPercentage: ingredient['bakersPercentage'],
+        );
+      }).toList();
 
-//   Widget _buildInfoSection(String title, String value) {
-//     return Padding(
-//       padding: const EdgeInsets.only(bottom: 8.0),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             title,
-//             style: TextStyle(
-//               fontSize: 20,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.grey[800],
-//             ),
-//           ),
-//           SizedBox(height: 4),
-//           Container(
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(5),
-//               color: Colors.white,
-//             ),
-//             padding: EdgeInsets.all(12),
-//             child: Text(
-//               value,
-//               style: TextStyle(fontSize: 18),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+      return PastryRecipe(
+        category: doc['category'],
+        name: doc['name'],
+        yield: doc['yield'],
+        unitWeight: doc['unitWeight'],
+        ingredients: ingredients,
+        method: doc['method'],
+      );
+    }).toList();
+
+    setState(() {}); // notify the UI to re-render
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pastry Recipes'),
+        backgroundColor: Colors.orange[300],
+      ),
+      body: ListView.builder(
+        itemCount: recipes.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(recipes[index].name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      PastryRecipeTable(recipe: recipes[index]),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

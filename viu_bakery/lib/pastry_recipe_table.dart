@@ -1,12 +1,12 @@
-// bread_recipe_table.dart
+// pastry_recipe_table.dart
 import 'package:flutter/material.dart';
-import 'bread_ingredient.dart';
-import 'bread_recipe_model.dart';
+import 'pastry_ingredient.dart';
+import 'pastry_recipe_model.dart';
 
-class BreadRecipeTable extends StatelessWidget {
-  final BreadRecipe recipe;
+class PastryRecipeTable extends StatelessWidget {
+  final PastryRecipe recipe;
 
-  BreadRecipeTable({required this.recipe});
+  PastryRecipeTable({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,8 @@ class BreadRecipeTable extends StatelessWidget {
               children: [
                 _buildRow('Name:', recipe.name),
                 _buildRow('Category:', recipe.category),
-                _buildRow('Yield:', recipe.yeild),
-                _buildRow('DDT:', recipe.ddt),
-                _buildRow('Scaling Weight:', recipe.scalingWeight),
+                _buildRow('Yield:', recipe.yield),
+                _buildRow('Unit Weight:', recipe.unitWeight),
                 Container(
                   margin: EdgeInsets.only(top: 12.0),
                   child: Text('Ingredients:',
@@ -44,7 +43,6 @@ class BreadRecipeTable extends StatelessWidget {
                           decoration: TextDecoration.none)),
                 ),
                 _buildIngredientsTable(recipe.ingredients),
-                _buildTotalRow(recipe),
                 Text('Method:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -88,7 +86,7 @@ class BreadRecipeTable extends StatelessWidget {
     );
   }
 
-  Widget _buildIngredientsTable(List<Ingredient> ingredients) {
+  Widget _buildIngredientsTable(List<PastryIngredient> ingredients) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -109,69 +107,25 @@ class BreadRecipeTable extends StatelessWidget {
             TableRow(
               children: [
                 _buildTableCell('Name'),
-                _buildTableCell('Starter Amount'),
-                _buildTableCell('Starter Unit'),
-                _buildTableCell('Dough Amount'),
-                _buildTableCell('Dough Unit'),
+                _buildTableCell('Quantity'),
+                _buildTableCell('Quantity Unit'),
+                _buildTableCell('Multiplier'),
+                _buildTableCell('Multiplier Unit'),
                 _buildTableCell('Bakers %'),
-                _buildTableCell('Formula'),
               ],
             ),
             ...ingredients.map((ingredient) {
               return TableRow(
                 children: [
                   _buildTableCell(ingredient.name),
-                  _buildTableCell('${ingredient.starterAmount}'),
-                  _buildTableCell(ingredient.starterUnit),
-                  _buildTableCell('${ingredient.doughAmount}'),
-                  _buildTableCell(ingredient.doughUnit),
-                  _buildTableCell('${ingredient.bakersPercentage}'),
-                  _buildTableCell(ingredient.formula),
+                  _buildTableCell(ingredient.qty),
+                  _buildTableCell(ingredient.qtyUnit),
+                  _buildTableCell(ingredient.multiplier),
+                  _buildTableCell(ingredient.multiplierUnit),
+                  _buildTableCell(ingredient.bakersPercentage),
                 ],
               );
             }).toList(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTotalRow(BreadRecipe recipe) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Row(
-          children: [
-            Expanded(
-                child: Text('Total Starter Amount:',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black,
-                        decoration: TextDecoration.none))),
-            Expanded(
-                child: Text(recipe.totalStarterAmount.toString(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      decoration: TextDecoration.none,
-                    ))),
-            Expanded(
-                child: Text('Total Dough Amount:',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black,
-                        decoration: TextDecoration.none))),
-            Expanded(
-                child: Text(recipe.totalDoughAmount.toString(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      decoration: TextDecoration.none,
-                    ))),
           ],
         ),
       ),

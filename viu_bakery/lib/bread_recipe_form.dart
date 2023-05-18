@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:viu_bakery/ingredient.dart';
+import 'package:viu_bakery/bread_ingredient.dart';
 import 'bread_recipe_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
