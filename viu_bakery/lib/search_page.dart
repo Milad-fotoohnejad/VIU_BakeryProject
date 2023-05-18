@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'pastry_recipe_model.dart';
+import 'pastry_ingredient.dart';
+import 'pastry_recipe_table.dart';
+import 'bread_ingredient.dart';
+import 'bread_recipe_model.dart';
+import 'bread_recipe_table.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -8,7 +15,9 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String? _selectedCategory;
-  List<String> categories = ['Bread', 'Pastry', 'Cookie'];
+  List<String> categories = ['Bread', 'Pastry'];
+  List<PastryRecipe> recipes = [];
+  List<BreadRecipe> breadRecipes = [];
 
   void onCategorySelected(String? category) {
     // Handle category selection logic
@@ -17,8 +26,65 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void onSearch() {
-    // Handle search logic
+  void onSearch() async {
+    String searchString = _searchController.text;
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('formRecipes')
+        .where('name', isGreaterThanOrEqualTo: searchString)
+        .where('category', isEqualTo: _selectedCategory)
+        .get();
+
+    if (_selectedCategory == "Pastry") {
+      recipes = querySnapshot.docs.map((doc) {
+        List ingredientsData = doc['ingredients'];
+        List<PastryIngredient> ingredients = ingredientsData.map((ingredient) {
+          return PastryIngredient(
+            name: ingredient['name'],
+            qty: ingredient['qty'],
+            qtyUnit: ingredient['qtyUnit'],
+            multiplier: ingredient['multiplier'],
+            multiplierUnit: ingredient['multiplierUnit'],
+            bakersPercentage: ingredient['bakersPercentage'],
+          );
+        }).toList();
+
+        return PastryRecipe(
+          category: doc['category'],
+          name: doc['name'],
+          yield: doc['yield'],
+          unitWeight: doc['unitWeight'],
+          ingredients: ingredients,
+          method: doc['method'],
+        );
+      }).toList();
+    } else if (_selectedCategory == "Bread") {
+      breadRecipes = querySnapshot.docs.map((doc) {
+        List ingredientsData = doc['ingredients'];
+        List<Ingredient> ingredients = ingredientsData.map((ingredient) {
+          return Ingredient(
+            name: ingredient['name'],
+            starterAmount: ingredient['starterAmount'],
+            starterUnit: ingredient['starterUnit'],
+            doughAmount: ingredient['doughAmount'],
+            doughUnit: ingredient['doughUnit'],
+            bakersPercentage: ingredient['bakersPercentage'],
+            formula: ingredient['formula'],
+          );
+        }).toList();
+
+        return BreadRecipe(
+          category: doc['category'],
+          name: doc['name'],
+          yeild: doc['yield'],
+          ddt: doc['ddt'],
+          scalingWeight: doc['unitWeight'],
+          ingredients: ingredients,
+          method: doc['method'],
+        );
+      }).toList();
+    }
+
+    setState(() {}); // notify the UI to re-render
   }
 
   @override
@@ -87,11 +153,19 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
                 child: ListView.builder(
-                  itemCount: 10, // Update this with the number of results
+                  itemCount: recipes.length,
                   itemBuilder: (context, index) {
-                    // Replace this with the actual result item
                     return ListTile(
-                      title: Text('Recipe ${index + 1}'),
+                      title: Text(recipes[index].name),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PastryRecipeTable(recipe: recipes[index]),
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

@@ -94,6 +94,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                 TextFormField(
                   controller: _methodController,
                   decoration: InputDecoration(labelText: 'Method'),
+                  keyboardType: TextInputType.multiline,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a method';
