@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyAccountPage extends StatefulWidget {
+  const MyAccountPage({super.key});
+
   @override
   _MyAccountPageState createState() => _MyAccountPageState();
 }
@@ -13,11 +15,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Account'),
+        title: const Text('My Account'),
         backgroundColor: Colors.orange[300],
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('../background-assets/myaccount.jpg'),
             fit: BoxFit.cover,
@@ -27,7 +29,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           opacity: 0.9,
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey[900],
@@ -47,34 +49,34 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     'Name: ${_auth.currentUser?.displayName ?? 'No user logged in'}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     'Email: ${_auth.currentUser?.email ?? 'No user logged in'}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.orange[300],
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      textStyle: TextStyle(fontSize: 18),
+                      backgroundColor: Colors.orange[300],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      textStyle: const TextStyle(fontSize: 18),
                     ),
                     onPressed: () {
                       // Sign out
                       _auth.signOut();
                     },
-                    child: Text('Sign Out'),
+                    child: const Text('Sign Out'),
                   ),
                 ],
               ),

@@ -5,6 +5,8 @@ import 'bread_ingredient.dart';
 import 'bread_recipe_table.dart';
 
 class BreadRecipeDisplay extends StatefulWidget {
+  const BreadRecipeDisplay({super.key});
+
   @override
   _BreadRecipeDisplayState createState() => _BreadRecipeDisplayState();
 }
@@ -69,7 +71,7 @@ class _BreadRecipeDisplayState extends State<BreadRecipeDisplay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bread Recipes'),
+        title: const Text('Bread Recipes'),
         backgroundColor: Colors.orange[300],
       ),
       body: ListView.builder(

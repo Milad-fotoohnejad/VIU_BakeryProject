@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecipeUploadPage extends StatefulWidget {
+  const RecipeUploadPage({super.key});
+
   @override
   _RecipeUploadPageState createState() => _RecipeUploadPageState();
 }
@@ -25,7 +26,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       List<Map<String, dynamic>> jsonArray = _convertExcelToJson(fileBytes);
       setState(() {
         // using JsonEncoder with indentation to pretty print the JSON array
-        _jsonArray = JsonEncoder.withIndent('  ').convert(jsonArray);
+        _jsonArray = const JsonEncoder.withIndent('  ').convert(jsonArray);
         _filePicked = true;
       });
     }
@@ -87,63 +88,61 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Recipe Excel'),
+        title: const Text('Upload Recipe Excel'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.only(right: 16),
+              margin: const EdgeInsets.only(right: 16),
               child: Expanded(
                 flex: 2,
                 child: Container(
-                  margin: EdgeInsets.only(right: 16),
+                  margin: const EdgeInsets.only(right: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextButton(
                         onPressed: _pickExcelFile,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                        style: TextButton.styleFrom(
+                          foregroundColor: const Color.fromARGB(255, 66, 66, 66), backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(16.0),
                           child: Text(
                             'Select Excel File',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
-                        style: TextButton.styleFrom(
-                          primary: Color.fromARGB(255, 66, 66, 66),
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
                       ),
                       if (_filePicked) // Add this condition
                         Container(
-                          margin: EdgeInsets.only(top: 16),
+                          margin: const EdgeInsets.only(top: 16),
                           child: TextButton(
                             onPressed:
-                                uploadDataToFirestore, // call upload function when this button is pressed
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
+                                uploadDataToFirestore,
+                            style: TextButton.styleFrom(
+                              foregroundColor: const Color.fromARGB(255, 66, 66, 66), backgroundColor: Colors.yellow[300],
+                            ), // call upload function when this button is pressed
+                            child: const Padding(
+                              padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'Upload Data to Database',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
-                            style: TextButton.styleFrom(
-                              primary: Color.fromARGB(255, 66, 66, 66),
-                              backgroundColor: Colors.yellow[300],
-                            ),
                           ),
                         ),
-                      SizedBox(height: 16),
-                      Text(
+                      const SizedBox(height: 16),
+                      const Text(
                         'Generated JSON Array:',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       _jsonArray.isNotEmpty
                           ? Expanded(
                               child: Card(
@@ -153,13 +152,13 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
                                   child: SingleChildScrollView(
                                     child: SelectableText(
                                       _jsonArray,
-                                      style: TextStyle(fontFamily: 'monospace'),
+                                      style: const TextStyle(fontFamily: 'monospace'),
                                     ),
                                   ),
                                 ),
                               ),
                             )
-                          : Text(
+                          : const Text(
                               'No JSON array to display',
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
@@ -171,7 +170,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
                 ),
               ),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Expanded(
               flex: 3,
               child: _jsonArray.isNotEmpty

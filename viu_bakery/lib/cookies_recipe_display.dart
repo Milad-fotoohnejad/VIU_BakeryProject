@@ -4,7 +4,7 @@ import 'package:viu_bakery/cookie_recipe.dart';
 class CookieRecipeDisplay extends StatelessWidget {
   final CookieRecipe recipe;
 
-  CookieRecipeDisplay({required this.recipe});
+  const CookieRecipeDisplay({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +18,23 @@ class CookieRecipeDisplay extends StatelessWidget {
           color: Colors.grey[300],
         ),
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Ingredients',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white,
                 ),
                 child: Table(
-                  columnWidths: {
+                  columnWidths: const {
                     0: FlexColumnWidth(2),
                     1: FlexColumnWidth(1),
                   },
@@ -60,7 +60,7 @@ class CookieRecipeDisplay extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildInfoSection('Method', recipe.method),
               _buildInfoSection('Baking Time', recipe.bakingTime),
               _buildInfoSection('Yield', recipe.yield),
@@ -91,7 +91,7 @@ class CookieRecipeDisplay extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }
@@ -110,16 +110,16 @@ class CookieRecipeDisplay extends StatelessWidget {
               color: Colors.grey[800],
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: Colors.white,
             ),
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             child: Text(
               value,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
         ],

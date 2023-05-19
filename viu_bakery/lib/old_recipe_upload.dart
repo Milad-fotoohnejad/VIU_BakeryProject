@@ -6,6 +6,8 @@ import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 import 'dart:math';
 
 class RecipeUploadPage extends StatefulWidget {
+  const RecipeUploadPage({super.key});
+
   @override
   _RecipeUploadPageState createState() => _RecipeUploadPageState();
 }
@@ -99,8 +101,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     var formula = <Map<String, dynamic>>[];
 
     for (int i = 10; i < rows.length; i++) {
-      if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null)
+      if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null) {
         break;
+      }
 
       if (rows[i].length < 7) {
         rows[i].length = 7;
@@ -122,8 +125,9 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
     var method = <String>[];
 
     for (int i = methodStartRow + 1; i < rows.length; i++) {
-      if (rows[i] == null)
+      if (rows[i] == null) {
         break; // Add a check to see if the row starts with a number followed by a period
+      }
       if (rows[i][0] != null &&
           rows[i][0] != '' &&
           RegExp(r'^\d+\.\s').hasMatch(rows[i][0])) {
@@ -187,7 +191,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
 
     return Table(
       border: TableBorder.all(color: Colors.grey.shade300),
-      columnWidths: {
+      columnWidths: const {
         0: FlexColumnWidth(1),
         1: FlexColumnWidth(1),
       },
@@ -197,7 +201,7 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
-          children: [
+          children: const [
             TableCell(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
@@ -226,18 +230,18 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
             children: [
               TableCell(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: index < formula.length
                       ? Text(
                           '${formula[index]['ingredient']}: ${formula[index]['dough']}')
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
               ),
               TableCell(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child:
-                      index < method.length ? Text(method[index]) : SizedBox(),
+                      index < method.length ? Text(method[index]) : const SizedBox(),
                 ),
               ),
             ],
@@ -251,42 +255,41 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Recipe Excel'),
+        title: const Text('Upload Recipe Excel'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextButton(
               onPressed: _pickExcelFile,
-              child: Text('Select Excel File'),
               style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
               ),
+              child: const Text('Select Excel File'),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Generated JSON Array:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _jsonArray.isNotEmpty
                 ? SelectableText(
                     _jsonArray,
-                    style: TextStyle(fontFamily: 'monospace'),
+                    style: const TextStyle(fontFamily: 'monospace'),
                   )
-                : Text('No JSON array to display'),
-            SizedBox(height: 16),
+                : const Text('No JSON array to display'),
+            const SizedBox(height: 16),
             if (_jsonArray.isNotEmpty) ...[
               _buildDataTable(),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Method:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               _buildMethodList(),
             ],
           ],
@@ -329,10 +332,10 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
             ]),
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         DataTable(
           columnSpacing: 24,
-          columns: [
+          columns: const [
             DataColumn(label: Text('Ingredients')),
             DataColumn(label: Text('Qty')),
             DataColumn(label: Text('Unit')),
@@ -378,14 +381,14 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
             DataRow(cells: [
               DataCell(
                   Text('Scaling Weight: ${parsedData[0]['scalingWeight']}')),
-              DataCell(Text('')),
+              const DataCell(Text('')),
             ]),
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         DataTable(
           columnSpacing: 24,
-          columns: [
+          columns: const [
             DataColumn(label: Text('Ingredients')),
             DataColumn(label: Text('Starter')),
             DataColumn(label: Text('Dough')),
@@ -408,10 +411,10 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
             (index, item) => MapEntry(
               index,
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Text(
-                  '$item',
-                  style: TextStyle(fontSize: 16),
+                  item,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),

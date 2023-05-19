@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BreadRecipeForm extends StatefulWidget {
   final Function(BreadRecipe) onSubmit;
 
-  BreadRecipeForm({required this.onSubmit});
+  const BreadRecipeForm({super.key, required this.onSubmit});
 
   @override
   _BreadRecipeFormState createState() => _BreadRecipeFormState();
@@ -33,7 +33,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
       TextEditingController();
   final TextEditingController _methodController = TextEditingController();
 
-  List<List<String>> _ingredients = [
+  final List<List<String>> _ingredients = [
     ['', '', '', '', '', '', ''],
   ];
 
@@ -41,7 +41,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Bread Recipe'),
+        title: const Text('Add Bread Recipe'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,7 +53,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
               children: [
                 TextFormField(
                   controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Recipe Category'),
+                  decoration: const InputDecoration(labelText: 'Recipe Category'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe category';
@@ -63,7 +63,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
                 ),
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Recipe Name'),
+                  decoration: const InputDecoration(labelText: 'Recipe Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe name';
@@ -73,7 +73,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
                 ),
                 TextFormField(
                   controller: _yeildController,
-                  decoration: InputDecoration(labelText: 'Recipe Yeild'),
+                  decoration: const InputDecoration(labelText: 'Recipe Yeild'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe yeild';
@@ -83,7 +83,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
                 ),
                 TextFormField(
                   controller: _ddtController,
-                  decoration: InputDecoration(labelText: 'Recipe DDT'),
+                  decoration: const InputDecoration(labelText: 'Recipe DDT'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe DDT';
@@ -94,7 +94,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
                 TextFormField(
                   controller: _scalingWeightController,
                   decoration:
-                      InputDecoration(labelText: 'Recipe Scaling Weight'),
+                      const InputDecoration(labelText: 'Recipe Scaling Weight'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe scaling weight';
@@ -105,10 +105,10 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
                 ..._buildIngredientsList(),
                 _buildAddIngredientButton(),
                 _buildOtherFields(),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitForm,
-                  child: Text('Save Recipe'),
+                  child: const Text('Save Recipe'),
                 ),
               ],
             ),
@@ -125,59 +125,59 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[0] = value,
-              decoration: InputDecoration(labelText: 'Ingredient Name'),
+              decoration: const InputDecoration(labelText: 'Ingredient Name'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) {
                 ingredient[1] = value;
                 setState(() {});
               },
-              decoration: InputDecoration(labelText: 'Starter Amount'),
+              decoration: const InputDecoration(labelText: 'Starter Amount'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[2] = value,
-              decoration: InputDecoration(labelText: 'Starter Unit'),
+              decoration: const InputDecoration(labelText: 'Starter Unit'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) {
                 ingredient[3] = value;
                 setState(() {});
               },
-              decoration: InputDecoration(labelText: 'Dough Amount'),
+              decoration: const InputDecoration(labelText: 'Dough Amount'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[4] = value,
-              decoration: InputDecoration(labelText: 'Dough Unit'),
+              decoration: const InputDecoration(labelText: 'Dough Unit'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[5] = value,
-              decoration: InputDecoration(labelText: 'Bakers %'),
+              decoration: const InputDecoration(labelText: 'Bakers %'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[6] = value,
-              decoration: InputDecoration(labelText: 'Formula'),
+              decoration: const InputDecoration(labelText: 'Formula'),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () {
               setState(() {
                 _ingredients.remove(ingredient);
@@ -191,7 +191,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
 
   Widget _buildAddIngredientButton() {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
       onPressed: () {
         setState(() {
           _ingredients.add(['', '', '', '', '', '', '']);
@@ -227,7 +227,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
       children: [
         TextFormField(
           controller: _methodController,
-          decoration: InputDecoration(labelText: 'Method'),
+          decoration: const InputDecoration(labelText: 'Method'),
           keyboardType: TextInputType.multiline,
           maxLines: null,
         ),
@@ -270,7 +270,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
         print("Document added with ID: ${document.id}");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Recipe added successfully!'),
             ),
           );
@@ -282,7 +282,7 @@ class _BreadRecipeFormState extends State<BreadRecipeForm> {
         print("Failed to add document: $error");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Failed to add recipe!'),
             ),
           );

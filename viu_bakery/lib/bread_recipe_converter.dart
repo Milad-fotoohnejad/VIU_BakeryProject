@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class BreadRecipeConverter {
@@ -21,7 +20,7 @@ class BreadRecipeConverter {
     }).toList();
 
     List<Widget> methodWidgets = parsedData[0]['method']
-        .map<Widget>((method) => Text(method, style: TextStyle(fontSize: 16)))
+        .map<Widget>((method) => Text(method, style: const TextStyle(fontSize: 16)))
         .toList();
 
     return Card(
@@ -33,29 +32,29 @@ class BreadRecipeConverter {
         child: Column(
           children: [
             Text('Category: $category',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             Text('Name: $name',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Divider(thickness: 2),
-            SizedBox(height: 8),
-            Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Text('DDT: $ddt', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Divider(thickness: 2),
-            SizedBox(height: 8),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Divider(thickness: 2),
+            const SizedBox(height: 8),
+            Text('Yield: $yieldValue', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('DDT: $ddt', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            const Divider(thickness: 2),
+            const SizedBox(height: 8),
             DataTable(
               columnSpacing: 24,
-              columns: [
+              columns: const [
                 DataColumn(label: Text('Ingredients')),
                 DataColumn(label: Text('Starter')),
                 DataColumn(label: Text('Dough')),
               ],
               rows: rows,
             ),
-            Divider(thickness: 2),
-            SizedBox(height: 16),
+            const Divider(thickness: 2),
+            const SizedBox(height: 16),
             Column(children: methodWidgets),
           ],
         ),
@@ -73,10 +72,11 @@ class BreadRecipeConverter {
     var formula = <Map<String, dynamic>>[];
 
     for (int i = 10; i < rows.length; i++) {
-      if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null)
+      if (rows[i][0] == 'Total' || rows[i][0] == 'Method' || rows[i][0] == null) {
         break;
+      }
 
-      if (rows[i] != null && rows[i].length < 7) {
+      if (rows[i].length < 7) {
         rows[i].length = 7;
         for (int j = rows[i].length; j < 7; j++) {
           rows[i].add(null);
@@ -96,8 +96,9 @@ class BreadRecipeConverter {
     var method = <String>[];
 
     for (int i = methodStartRow + 1; i < rows.length; i++) {
-      if (rows[i] == null)
+      if (rows[i] == null) {
         break; // Add a check to see if the row starts with a number followed by a period
+      }
       if (rows[i][0] != null &&
           rows[i][0] != '' &&
           RegExp(r'^\d+\.\s').hasMatch(rows[i][0])) {

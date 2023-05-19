@@ -6,6 +6,8 @@ import 'pastry_ingredient.dart';
 import 'pastry_recipe_table.dart';
 
 class PastryRecipeDisplay extends StatefulWidget {
+  const PastryRecipeDisplay({super.key});
+
   @override
   _PastryRecipeDisplayState createState() => _PastryRecipeDisplayState();
 }
@@ -55,7 +57,7 @@ class _PastryRecipeDisplayState extends State<PastryRecipeDisplay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pastry Recipes'),
+        title: const Text('Pastry Recipes'),
         backgroundColor: Colors.orange[300],
       ),
       body: ListView.builder(

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/home_page.dart';
 import 'package:viu_bakery/navigation.dart';
-import 'login_signup_page.dart';
 import 'recipe_upload_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
           apiKey: "AIzaSyAQce9PR40vDxItWDpxB4btKB248a7b39U",
           authDomain: "bakeryproject-6f924.firebaseapp.com",
           projectId: "bakeryproject-6f924",
@@ -24,10 +22,12 @@ void main() async {
       rethrow;
     }
   }
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Scaffold(
+      home: const Scaffold(
         body: Column(
           children: [
             TopNavigationBar(),
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/upload': (context) => RecipeUploadPage(),
+        '/upload': (context) => const RecipeUploadPage(),
       },
     );
   }

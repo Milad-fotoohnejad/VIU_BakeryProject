@@ -4,7 +4,7 @@ import 'package:viu_bakery/cookie_recipe.dart';
 class CookieRecipeForm extends StatefulWidget {
   final Function(CookieRecipe) onSubmit;
 
-  CookieRecipeForm({required this.onSubmit});
+  const CookieRecipeForm({super.key, required this.onSubmit});
 
   @override
   _CookieRecipeFormState createState() => _CookieRecipeFormState();
@@ -27,7 +27,7 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
   final TextEditingController _yieldController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
 
-  List<List<String>> _ingredients = [
+  final List<List<String>> _ingredients = [
     ['', ''],
   ];
 
@@ -35,7 +35,7 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Cookie Recipe'),
+        title: const Text('Add Cookie Recipe'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -47,7 +47,7 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Recipe Name'),
+                  decoration: const InputDecoration(labelText: 'Recipe Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe name';
@@ -58,10 +58,10 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
                 ..._buildIngredientsList(),
                 _buildAddIngredientButton(),
                 _buildOtherFields(),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('Save Recipe'),
+                  child: const Text('Save Recipe'),
                 ),
               ],
             ),
@@ -78,18 +78,18 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[0] = value,
-              decoration: InputDecoration(labelText: 'Ingredient Name'),
+              decoration: const InputDecoration(labelText: 'Ingredient Name'),
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[1] = value,
-              decoration: InputDecoration(labelText: 'Ingredient Amount'),
+              decoration: const InputDecoration(labelText: 'Ingredient Amount'),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () {
               setState(() {
                 _ingredients.remove(ingredient);
@@ -103,7 +103,7 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
 
   Widget _buildAddIngredientButton() {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
       onPressed: () {
         setState(() {
           _ingredients.add(['', '']);
@@ -117,19 +117,19 @@ class _CookieRecipeFormState extends State<CookieRecipeForm> {
       children: [
         TextFormField(
           controller: _methodController,
-          decoration: InputDecoration(labelText: 'Method'),
+          decoration: const InputDecoration(labelText: 'Method'),
         ),
         TextFormField(
           controller: _bakingTimeController,
-          decoration: InputDecoration(labelText: 'Baking Time'),
+          decoration: const InputDecoration(labelText: 'Baking Time'),
         ),
         TextFormField(
           controller: _yieldController,
-          decoration: InputDecoration(labelText: 'Yield'),
+          decoration: const InputDecoration(labelText: 'Yield'),
         ),
         TextFormField(
           controller: _instructionsController,
-          decoration: InputDecoration(labelText: 'Instructions'),
+          decoration: const InputDecoration(labelText: 'Instructions'),
         ),
       ],
     );

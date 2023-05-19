@@ -36,21 +36,21 @@ class PastryRecipeConverter {
         child: Column(
           children: [
             Text('Category: $category',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             Text('Name: $name',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Divider(thickness: 2),
-            SizedBox(height: 8),
-            Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Text('Unit Weight: $unitWeight', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Divider(thickness: 2),
-            SizedBox(height: 8),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Divider(thickness: 2),
+            const SizedBox(height: 8),
+            Text('Yield: $yieldValue', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('Unit Weight: $unitWeight', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            const Divider(thickness: 2),
+            const SizedBox(height: 8),
             DataTable(
               columnSpacing: 24,
-              columns: [
+              columns: const [
                 DataColumn(label: Text('Ingredients')),
                 DataColumn(label: Text('Qty')),
                 DataColumn(label: Text('Unit')),
@@ -60,8 +60,8 @@ class PastryRecipeConverter {
               ],
               rows: rows,
             ),
-            Divider(thickness: 2),
-            SizedBox(height: 16),
+            const Divider(thickness: 2),
+            const SizedBox(height: 16),
             Column(children: methodWidgets),
           ],
         ),
@@ -96,9 +96,8 @@ class PastryRecipeConverter {
             String bakersPercentage = '0%';
             if (rows[j][5] != null &&
                 double.tryParse(rows[j][5].toString()) != null) {
-              bakersPercentage = (double.parse(rows[j][5].toString()) * 100)
-                      .toStringAsFixed(2) +
-                  '%';
+              bakersPercentage = '${(double.parse(rows[j][5].toString()) * 100)
+                      .toStringAsFixed(2)}%';
             }
 
             formula.add({

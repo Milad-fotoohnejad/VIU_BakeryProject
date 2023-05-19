@@ -5,6 +5,8 @@ import 'recipe_upload_page.dart';
 import 'my_account_page.dart';
 
 class TopNavigationBar extends StatelessWidget {
+  const TopNavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,12 +15,12 @@ class TopNavigationBar extends StatelessWidget {
         children: [
           Container(
             height: 56,
-            margin: EdgeInsets.only(top: 16),
+            margin: const EdgeInsets.only(top: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Image.asset(
                     '../background-assets/viu_logo.png',
                     height: 72,
@@ -38,7 +40,7 @@ class TopNavigationBar extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SearchPage()),
+                        MaterialPageRoute(builder: (context) => const SearchPage()),
                       );
                     }),
                 _buildNavItem(
@@ -55,7 +57,7 @@ class TopNavigationBar extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyAccountPage()),
+                      MaterialPageRoute(builder: (context) => const MyAccountPage()),
                     );
                   },
                 ),
@@ -65,7 +67,7 @@ class TopNavigationBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RecipeUploadPage()),
+                            builder: (context) => const RecipeUploadPage()),
                       );
                     }),
               ],
@@ -77,7 +79,7 @@ class TopNavigationBar extends StatelessWidget {
   }
 
   Widget _buildNavItem({required String title, required VoidCallback onTap}) {
-    final ValueNotifier<bool> _hoverNotifier = ValueNotifier(false);
+    final ValueNotifier<bool> hoverNotifier = ValueNotifier(false);
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -85,14 +87,14 @@ class TopNavigationBar extends StatelessWidget {
         onTap: onTap,
         hoverColor: Colors.transparent,
         child: AnimatedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          duration: Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             color: Colors.transparent,
           ),
           child: ValueListenableBuilder<bool>(
-            valueListenable: _hoverNotifier,
+            valueListenable: hoverNotifier,
             builder: (context, isHovering, child) {
               return Text(
                 title,
@@ -106,7 +108,7 @@ class TopNavigationBar extends StatelessWidget {
           ),
         ),
         onHover: (isHovering) {
-          _hoverNotifier.value = isHovering;
+          hoverNotifier.value = isHovering;
         },
       ),
     );

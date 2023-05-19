@@ -6,22 +6,22 @@ import 'bread_recipe_model.dart';
 class BreadRecipeTable extends StatelessWidget {
   final BreadRecipe recipe;
 
-  BreadRecipeTable({required this.recipe});
+  const BreadRecipeTable({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
           color: Colors.orange[100],
           border: Border.all(color: Colors.black, width: 1.0),
           borderRadius: BorderRadius.circular(8.0)),
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.black, width: 1.0),
@@ -35,8 +35,8 @@ class BreadRecipeTable extends StatelessWidget {
                 _buildRow('DDT:', recipe.ddt),
                 _buildRow('Scaling Weight:', recipe.scalingWeight),
                 Container(
-                  margin: EdgeInsets.only(top: 12.0),
-                  child: Text('Ingredients:',
+                  margin: const EdgeInsets.only(top: 12.0),
+                  child: const Text('Ingredients:',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -45,7 +45,7 @@ class BreadRecipeTable extends StatelessWidget {
                 ),
                 _buildIngredientsTable(recipe.ingredients),
                 _buildTotalRow(recipe),
-                Text('Method:',
+                const Text('Method:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -62,7 +62,7 @@ class BreadRecipeTable extends StatelessWidget {
 
   Widget _buildRow(String label, String value) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -70,14 +70,14 @@ class BreadRecipeTable extends StatelessWidget {
           children: [
             Expanded(
                 child: Text(label,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.black,
                         decoration: TextDecoration.none))),
             Expanded(
                 child: Text(value,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black,
                       decoration: TextDecoration.none,
@@ -90,13 +90,13 @@ class BreadRecipeTable extends StatelessWidget {
 
   Widget _buildIngredientsTable(List<Ingredient> ingredients) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
         child: Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           border: TableBorder.all(width: 2.0),
-          columnWidths: {
+          columnWidths: const {
             0: FlexColumnWidth(1),
             1: FlexColumnWidth(1),
             2: FlexColumnWidth(1),
@@ -121,11 +121,11 @@ class BreadRecipeTable extends StatelessWidget {
               return TableRow(
                 children: [
                   _buildTableCell(ingredient.name),
-                  _buildTableCell('${ingredient.starterAmount}'),
+                  _buildTableCell(ingredient.starterAmount),
                   _buildTableCell(ingredient.starterUnit),
-                  _buildTableCell('${ingredient.doughAmount}'),
+                  _buildTableCell(ingredient.doughAmount),
                   _buildTableCell(ingredient.doughUnit),
-                  _buildTableCell('${ingredient.bakersPercentage}'),
+                  _buildTableCell(ingredient.bakersPercentage),
                   _buildTableCell(ingredient.formula),
                 ],
               );
@@ -138,13 +138,13 @@ class BreadRecipeTable extends StatelessWidget {
 
   Widget _buildTotalRow(BreadRecipe recipe) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
                 child: Text('Total Starter Amount:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -153,12 +153,12 @@ class BreadRecipeTable extends StatelessWidget {
                         decoration: TextDecoration.none))),
             Expanded(
                 child: Text(recipe.totalStarterAmount.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black,
                       decoration: TextDecoration.none,
                     ))),
-            Expanded(
+            const Expanded(
                 child: Text('Total Dough Amount:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -167,7 +167,7 @@ class BreadRecipeTable extends StatelessWidget {
                         decoration: TextDecoration.none))),
             Expanded(
                 child: Text(recipe.totalDoughAmount.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black,
                       decoration: TextDecoration.none,
@@ -183,7 +183,7 @@ class BreadRecipeTable extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         value,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14,
           color: Colors.black,
           decoration: TextDecoration.none,
@@ -201,7 +201,7 @@ class BreadRecipeTable extends StatelessWidget {
           children: methodSteps
               .where((step) => step.trim().isNotEmpty)
               .map((step) => Text(step,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                     decoration: TextDecoration.none,

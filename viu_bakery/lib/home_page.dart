@@ -8,17 +8,19 @@ import 'package:viu_bakery/pastry_recipe_display.dart';
 import 'package:viu_bakery/cookie_recipe_form.dart';
 import 'package:viu_bakery/cookie_recipe.dart';
 import 'package:viu_bakery/cookies_recipe_display.dart';
-import 'navigation.dart';
-import 'bread_recipe_table.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return RecipeListScreen();
+    return const RecipeListScreen();
   }
 }
 
 class RecipeListScreen extends StatefulWidget {
+  const RecipeListScreen({super.key});
+
   @override
   _RecipeListScreenState createState() => _RecipeListScreenState();
 }
@@ -63,7 +65,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   Widget _buildAddSubMenu() {
     if (_showAddSubMenus) {
       return Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -81,7 +83,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 },
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: _buildButton(
                 label: 'Pastry Recipe',
@@ -97,7 +99,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 },
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: _buildButton(
                 label: 'Cookie Recipe',
@@ -117,13 +119,13 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ),
       );
     }
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
   Widget _buildViewSubMenu() {
     if (_showViewSubMenus) {
       return Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -134,13 +136,13 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BreadRecipeDisplay(),
+                      builder: (context) => const BreadRecipeDisplay(),
                     ),
                   );
                 },
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: _buildButton(
                 label: 'Pastry Recipes',
@@ -148,13 +150,13 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PastryRecipeDisplay(),
+                      builder: (context) => const PastryRecipeDisplay(),
                     ),
                   );
                 },
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: _buildButton(
                 label: 'Cookie Recipes',
@@ -177,14 +179,14 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         ),
       );
     }
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('../background-assets/background.jpg'),
             fit: BoxFit.cover,
@@ -194,7 +196,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
           opacity: 0.9,
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey[900],
@@ -204,7 +206,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(
+                  const Center(
                     child: Text(
                       'Recipes Section',
                       style: TextStyle(
@@ -214,31 +216,31 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   _buildButton(
                     label: 'Add a Recipe',
                     onPressed: _toggleAddSubMenus,
                   ),
                   AnimatedCrossFade(
-                    firstChild: SizedBox.shrink(),
+                    firstChild: const SizedBox.shrink(),
                     secondChild: _buildAddSubMenu(),
                     crossFadeState: _showAddSubMenus
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   _buildButton(
                     label: 'View Recipes',
                     onPressed: _toggleViewSubMenus,
                   ),
                   AnimatedCrossFade(
-                    firstChild: SizedBox.shrink(),
+                    firstChild: const SizedBox.shrink(),
                     secondChild: _buildViewSubMenu(),
                     crossFadeState: _showViewSubMenus
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                   ),
                 ],
               ),
@@ -253,9 +255,9 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
       {required String label, required VoidCallback onPressed}) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Colors.orange[300],
-        padding: EdgeInsets.symmetric(vertical: 16),
-        textStyle: TextStyle(fontSize: 18),
+        backgroundColor: Colors.orange[300],
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        textStyle: const TextStyle(fontSize: 18),
       ),
       onPressed: onPressed,
       child: Text(label),
@@ -268,8 +270,8 @@ class RecipeDisplayScreen<T> extends StatelessWidget {
   final String Function(T) recipeNameGetter;
   final Widget Function(T) recipeDisplayBuilder;
 
-  RecipeDisplayScreen(
-      {required this.recipes,
+  const RecipeDisplayScreen(
+      {super.key, required this.recipes,
       required this.recipeNameGetter,
       required this.recipeDisplayBuilder});
 
@@ -277,7 +279,7 @@ class RecipeDisplayScreen<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bakery Recipes'),
+        title: const Text('Bakery Recipes'),
         backgroundColor: Colors.orange[300],
       ),
       body: ListView.builder(

@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PastryRecipeForm extends StatefulWidget {
   final Function(PastryRecipe) onSubmit;
 
-  PastryRecipeForm({required this.onSubmit});
+  const PastryRecipeForm({super.key, required this.onSubmit});
 
   @override
   _PastryRecipeFormState createState() => _PastryRecipeFormState();
@@ -31,7 +31,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
   final TextEditingController _unitWeightController = TextEditingController();
   final TextEditingController _methodController = TextEditingController();
 
-  List<List<String>> _ingredients = [
+  final List<List<String>> _ingredients = [
     ['', '', '', '', '', ''],
   ];
 
@@ -39,7 +39,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Pastry Recipe'),
+        title: const Text('Add Pastry Recipe'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,7 +51,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
               children: [
                 TextFormField(
                   controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Recipe Category'),
+                  decoration: const InputDecoration(labelText: 'Recipe Category'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe category';
@@ -61,7 +61,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                 ),
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Recipe Name'),
+                  decoration: const InputDecoration(labelText: 'Recipe Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe name';
@@ -71,7 +71,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                 ),
                 TextFormField(
                   controller: _yieldController,
-                  decoration: InputDecoration(labelText: 'Recipe Yield'),
+                  decoration: const InputDecoration(labelText: 'Recipe Yield'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe yield';
@@ -81,7 +81,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                 ),
                 TextFormField(
                   controller: _unitWeightController,
-                  decoration: InputDecoration(labelText: 'Unit Weight'),
+                  decoration: const InputDecoration(labelText: 'Unit Weight'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a unit weight';
@@ -93,7 +93,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                 _buildAddIngredientButton(),
                 TextFormField(
                   controller: _methodController,
-                  decoration: InputDecoration(labelText: 'Method'),
+                  decoration: const InputDecoration(labelText: 'Method'),
                   keyboardType: TextInputType.multiline,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -102,10 +102,10 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitForm,
-                  child: Text('Save Recipe'),
+                  child: const Text('Save Recipe'),
                 ),
               ],
             ),
@@ -122,52 +122,52 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[0] = value,
-              decoration: InputDecoration(labelText: 'Ingredient Name'),
+              decoration: const InputDecoration(labelText: 'Ingredient Name'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) {
                 ingredient[1] = value;
                 setState(() {});
               },
-              decoration: InputDecoration(labelText: 'QTY'),
+              decoration: const InputDecoration(labelText: 'QTY'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[2] = value,
-              decoration: InputDecoration(labelText: 'Unit'),
+              decoration: const InputDecoration(labelText: 'Unit'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) {
                 ingredient[3] = value;
                 setState(() {});
               },
-              decoration: InputDecoration(labelText: 'Multiplier'),
+              decoration: const InputDecoration(labelText: 'Multiplier'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[4] = value,
-              decoration: InputDecoration(labelText: 'Unit'),
+              decoration: const InputDecoration(labelText: 'Unit'),
             ),
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: TextField(
               onChanged: (value) => ingredient[5] = value,
-              decoration: InputDecoration(labelText: 'Bakers %'),
+              decoration: const InputDecoration(labelText: 'Bakers %'),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () {
               setState(() {
                 _ingredients.remove(ingredient);
@@ -181,7 +181,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
 
   Widget _buildAddIngredientButton() {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
       onPressed: () {
         setState(() {
           _ingredients.add(['', '', '', '', '', '']);
@@ -222,7 +222,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
         print("Document added with ID: ${document.id}");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Recipe added successfully!'),
             ),
           );
@@ -234,7 +234,7 @@ class _PastryRecipeFormState extends State<PastryRecipeForm> {
         print("Failed to add document: $error");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Failed to add recipe!'),
             ),
           );

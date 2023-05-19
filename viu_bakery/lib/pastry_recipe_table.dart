@@ -6,22 +6,22 @@ import 'pastry_recipe_model.dart';
 class PastryRecipeTable extends StatelessWidget {
   final PastryRecipe recipe;
 
-  PastryRecipeTable({required this.recipe});
+  const PastryRecipeTable({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
           color: Colors.orange[100],
           border: Border.all(color: Colors.black, width: 1.0),
           borderRadius: BorderRadius.circular(8.0)),
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.black, width: 1.0),
@@ -34,8 +34,8 @@ class PastryRecipeTable extends StatelessWidget {
                 _buildRow('Yield:', recipe.yield),
                 _buildRow('Unit Weight:', recipe.unitWeight),
                 Container(
-                  margin: EdgeInsets.only(top: 12.0),
-                  child: Text('Ingredients:',
+                  margin: const EdgeInsets.only(top: 12.0),
+                  child: const Text('Ingredients:',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -43,7 +43,7 @@ class PastryRecipeTable extends StatelessWidget {
                           decoration: TextDecoration.none)),
                 ),
                 _buildIngredientsTable(recipe.ingredients),
-                Text('Method:',
+                const Text('Method:',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -60,7 +60,7 @@ class PastryRecipeTable extends StatelessWidget {
 
   Widget _buildRow(String label, String value) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 1.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -68,14 +68,14 @@ class PastryRecipeTable extends StatelessWidget {
           children: [
             Expanded(
                 child: Text(label,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.black,
                         decoration: TextDecoration.none))),
             Expanded(
                 child: Text(value,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black,
                       decoration: TextDecoration.none,
@@ -88,13 +88,13 @@ class PastryRecipeTable extends StatelessWidget {
 
   Widget _buildIngredientsTable(List<PastryIngredient> ingredients) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
         child: Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           border: TableBorder.all(width: 2.0),
-          columnWidths: {
+          columnWidths: const {
             0: FlexColumnWidth(1),
             1: FlexColumnWidth(1),
             2: FlexColumnWidth(1),
@@ -137,7 +137,7 @@ class PastryRecipeTable extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         value,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 14,
           color: Colors.black,
           decoration: TextDecoration.none,
@@ -155,7 +155,7 @@ class PastryRecipeTable extends StatelessWidget {
           children: methodSteps
               .where((step) => step.trim().isNotEmpty)
               .map((step) => Text(step,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                     decoration: TextDecoration.none,

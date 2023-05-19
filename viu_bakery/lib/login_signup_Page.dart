@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
-import 'my_account_page.dart';
 
 class LoginSignupPage extends StatefulWidget {
+  const LoginSignupPage({super.key});
+
   @override
   _LoginSignupPageState createState() => _LoginSignupPageState();
 }
@@ -24,11 +25,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       );
       // User is logged in
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Successfully logged in')),
+        const SnackBar(content: Text('Successfully logged in')),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyApp()),
+        MaterialPageRoute(builder: (context) => const MyApp()),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -55,7 +56,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
     if (!regex.hasMatch(password)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text(
                 'Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.')),
       );
@@ -71,11 +72,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       await userCredential.user!.updateDisplayName(name);
       // User is signed up
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Successfully signed up')),
+        const SnackBar(content: Text('Successfully signed up')),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyApp()),
+        MaterialPageRoute(builder: (context) => const MyApp()),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -104,11 +105,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign-up Page'),
+        title: const Text('Sign-up Page'),
         backgroundColor: Colors.orange[300],
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('../background-assets/login.jpg'),
             fit: BoxFit.cover,
@@ -118,7 +119,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           opacity: 0.9,
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey[900],
@@ -138,54 +139,54 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   if (!_isLogin) ...[
                     // Name field only appears for Sign Up
                     TextField(
                       controller: _nameController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         labelText: 'Name',
                         labelStyle: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _emailController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.white),
                       fillColor: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _passwordController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(color: Colors.white),
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   _buildButton(
                     label: _isLogin ? 'Login' : 'Sign up',
                     onPressed: () {
                       // Implement login or sign up logic
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextButton(
                     onPressed: _toggleLoginSignup,
                     child: Text(
                       _isLogin
                           ? 'Don\'t have an account? Sign up'
                           : 'Already have an account? Login',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -201,9 +202,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       {required String label, required VoidCallback onPressed}) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Colors.orange[300],
-        padding: EdgeInsets.symmetric(vertical: 16),
-        textStyle: TextStyle(fontSize: 18),
+        backgroundColor: Colors.orange[300],
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        textStyle: const TextStyle(fontSize: 18),
       ),
       onPressed: () {
         String email = _emailController.text;
