@@ -10,49 +10,54 @@ class BreadRecipeTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-          color: Colors.orange[100],
-          border: Border.all(color: Colors.black, width: 1.0),
-          borderRadius: BorderRadius.circular(8.0)),
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Recipe'),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+            color: Colors.orange[100],
+            border: Border.all(color: Colors.black, width: 1.0),
+            borderRadius: BorderRadius.circular(8.0)),
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black, width: 1.0),
-                borderRadius: BorderRadius.circular(8.0)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildRow('Name:', recipe.name),
-                _buildRow('Category:', recipe.category),
-                _buildRow('Yield:', recipe.yeild),
-                _buildRow('DDT:', recipe.ddt),
-                _buildRow('Scaling Weight:', recipe.scalingWeight),
-                Container(
-                  margin: const EdgeInsets.only(top: 12.0),
-                  child: const Text('Ingredients:',
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 1.0),
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildRow('Name:', recipe.name),
+                  _buildRow('Category:', recipe.category),
+                  _buildRow('Yield:', recipe.yeild),
+                  _buildRow('DDT:', recipe.ddt),
+                  _buildRow('Scaling Weight:', recipe.scalingWeight),
+                  Container(
+                    margin: const EdgeInsets.only(top: 12.0),
+                    child: const Text('Ingredients:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black,
+                            decoration: TextDecoration.none)),
+                  ),
+                  _buildIngredientsTable(recipe.ingredients),
+                  _buildTotalRow(recipe),
+                  const Text('Method:',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.black,
                           decoration: TextDecoration.none)),
-                ),
-                _buildIngredientsTable(recipe.ingredients),
-                _buildTotalRow(recipe),
-                const Text('Method:',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                        decoration: TextDecoration.none)),
-                _buildMethodRow(recipe.method.split('\n')),
-              ],
+                  _buildMethodRow(recipe.method.split('\n')),
+                ],
+              ),
             ),
           ),
         ),
