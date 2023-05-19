@@ -28,4 +28,19 @@ class PastryRecipe {
       'method': method,
     };
   }
+
+  static PastryRecipe fromJson(Map<String, dynamic> json) {
+    var ingredientList = json['ingredients'] as List;
+    List<PastryIngredient> ingredients = ingredientList
+        .map((item) => PastryIngredient.fromJson(item as Map<String, dynamic>))
+        .toList();
+    return PastryRecipe(
+      name: json['name'],
+      category: json['category'],
+      yield: json['yield'],
+      unitWeight: json['unitWeight'],
+      ingredients: ingredients,
+      method: json['method'],
+    );
+  }
 }

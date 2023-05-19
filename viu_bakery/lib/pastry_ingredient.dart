@@ -25,4 +25,16 @@ class PastryIngredient {
       'bakersPercentage': bakersPercentage,
     };
   }
+
+  static PastryIngredient fromJson(Map<String, dynamic> map) {
+    // return new PastryIngredient from map
+    return PastryIngredient(
+      name: map['name'],
+      qty: map['qty'],
+      qtyUnit: map['qtyUnit'],
+      multiplier: map['multiplier'],
+      multiplierUnit: map['multiplierUnit'],
+      bakersPercentage: map['bakersPercentage'],
+    );
+  }
 }

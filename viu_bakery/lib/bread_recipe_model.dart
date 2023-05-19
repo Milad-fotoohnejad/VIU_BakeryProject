@@ -37,4 +37,23 @@ class BreadRecipe {
       'totalDoughAmount': totalDoughAmount,
     };
   }
+
+  static BreadRecipe fromJson(Map<String, dynamic> json) {
+    var ingredientList = json['ingredients'] as List;
+    List<Ingredient> ingredients = ingredientList
+        .map((item) => Ingredient.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return BreadRecipe(
+      category: json['category'],
+      name: json['name'],
+      yeild: json['yeild'],
+      ddt: json['ddt'],
+      scalingWeight: json['scalingWeight'],
+      ingredients: ingredients,
+      method: json['method'],
+      totalStarterAmount: json['totalStarterAmount'] ?? 0.0,
+      totalDoughAmount: json['totalDoughAmount'] ?? 0.0,
+    );
+  }
 }

@@ -28,4 +28,17 @@ class Ingredient {
       'formula': formula,
     };
   }
+
+  static Ingredient fromJson(Map<String, dynamic> map) {
+    // return new Ingredient from map
+    return Ingredient(
+      name: map['name'],
+      starterAmount: map['starterAmount'],
+      starterUnit: map['starterUnit'],
+      doughAmount: map['doughAmount'],
+      doughUnit: map['doughUnit'],
+      bakersPercentage: map['bakersPercentage'],
+      formula: map['formula'],
+    );
+  }
 }

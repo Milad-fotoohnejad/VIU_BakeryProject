@@ -5,9 +5,9 @@ import 'package:viu_bakery/bread_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_model.dart';
 import 'package:viu_bakery/pastry_recipe_display.dart';
-import 'package:viu_bakery/cookie_recipe_form.dart';
-import 'package:viu_bakery/cookie_recipe.dart';
-import 'package:viu_bakery/cookies_recipe_display.dart';
+// import 'package:viu_bakery/cookie_recipe_form.dart';
+// import 'package:viu_bakery/cookie_recipe.dart';
+// import 'package:viu_bakery/cookies_recipe_display.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,7 +28,7 @@ class RecipeListScreen extends StatefulWidget {
 class _RecipeListScreenState extends State<RecipeListScreen> {
   final List<BreadRecipe> _breadRecipes = [];
   final List<PastryRecipe> _pastryRecipes = [];
-  final List<CookieRecipe> _cookieRecipes = [];
+  // final List<CookieRecipe> _cookieRecipes = [];
   bool _showAddSubMenus = false;
   bool _showViewSubMenus = false;
 
@@ -44,11 +44,11 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     });
   }
 
-  void _addCookieRecipe(CookieRecipe recipe) {
-    setState(() {
-      _cookieRecipes.add(recipe);
-    });
-  }
+  // void _addCookieRecipe(CookieRecipe recipe) {
+  //   setState(() {
+  //     _cookieRecipes.add(recipe);
+  //   });
+  // }
 
   void _toggleAddSubMenus() {
     setState(() {
@@ -100,21 +100,21 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            Expanded(
-              child: _buildButton(
-                label: 'Cookie Recipe',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CookieRecipeForm(
-                        onSubmit: _addCookieRecipe,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: _buildButton(
+            //     label: 'Cookie Recipe',
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => CookieRecipeForm(
+            //             onSubmit: _addCookieRecipe,
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       );
@@ -157,24 +157,24 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            Expanded(
-              child: _buildButton(
-                label: 'Cookie Recipes',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeDisplayScreen<CookieRecipe>(
-                        recipes: _cookieRecipes,
-                        recipeNameGetter: (recipe) => recipe.name,
-                        recipeDisplayBuilder: (recipe) =>
-                            CookieRecipeDisplay(recipe: recipe),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: _buildButton(
+            //     label: 'Cookie Recipes',
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => RecipeDisplayScreen<CookieRecipe>(
+            //             recipes: _cookieRecipes,
+            //             recipeNameGetter: (recipe) => recipe.name,
+            //             recipeDisplayBuilder: (recipe) =>
+            //                 CookieRecipeDisplay(recipe: recipe),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       );
@@ -271,7 +271,8 @@ class RecipeDisplayScreen<T> extends StatelessWidget {
   final Widget Function(T) recipeDisplayBuilder;
 
   const RecipeDisplayScreen(
-      {super.key, required this.recipes,
+      {super.key,
+      required this.recipes,
       required this.recipeNameGetter,
       required this.recipeDisplayBuilder});
 
