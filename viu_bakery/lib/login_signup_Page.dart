@@ -111,7 +111,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../background-assets/login.jpg'),
+            image: AssetImage('background-assets/login.jpg'),
             fit: BoxFit.cover,
           ),
         ),

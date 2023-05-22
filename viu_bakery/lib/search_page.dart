@@ -151,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 child: _selectedCategory == "Pastry"
                     ? recipes.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text(
                                 style: TextStyle(
                                     fontSize: 18,
@@ -176,7 +176,7 @@ class _SearchPageState extends State<SearchPage> {
                             },
                           )
                     : breadRecipes.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text(
                                 style: TextStyle(
                                     fontSize: 18,

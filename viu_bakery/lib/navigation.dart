@@ -22,7 +22,7 @@ class TopNavigationBar extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Image.asset(
-                    '../background-assets/viu_logo.png',
+                    'background-assets/viu_logo.png',
                     height: 72,
                     width: 72,
                   ),
@@ -40,7 +40,8 @@ class TopNavigationBar extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SearchPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const SearchPage()),
                       );
                     }),
                 _buildNavItem(
@@ -49,7 +50,7 @@ class TopNavigationBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LoginSignupPage()),
+                            builder: (context) => const LoginSignupPage()),
                       );
                     }),
                 _buildNavItem(
@@ -57,7 +58,8 @@ class TopNavigationBar extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MyAccountPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const MyAccountPage()),
                     );
                   },
                 ),

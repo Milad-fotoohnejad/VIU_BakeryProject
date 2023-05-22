@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
-      // commented this out to make it to work on iOS and android
+      // changed this from API keys to FirebaseOptions
       options: DefaultFirebaseOptions.currentPlatform,
     );
   } on FirebaseException catch (e) {

@@ -188,7 +188,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../background-assets/background.jpg'),
+            image: AssetImage('background-assets/background.jpg'),
             fit: BoxFit.cover,
           ),
         ),

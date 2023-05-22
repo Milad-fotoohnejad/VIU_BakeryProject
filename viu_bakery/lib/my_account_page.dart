@@ -21,7 +21,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('../background-assets/myaccount.jpg'),
+            image: AssetImage('background-assets/myaccount.jpg'),
             fit: BoxFit.cover,
           ),
         ),
