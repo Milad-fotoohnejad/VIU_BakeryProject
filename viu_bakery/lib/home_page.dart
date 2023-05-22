@@ -5,21 +5,22 @@ import 'package:viu_bakery/bread_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_model.dart';
 import 'package:viu_bakery/pastry_recipe_display.dart';
-// import 'package:viu_bakery/cookie_recipe_form.dart';
-// import 'package:viu_bakery/cookie_recipe.dart';
-// import 'package:viu_bakery/cookies_recipe_display.dart';
+import 'package:viu_bakery/user_model.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final UserModel user;
+
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const RecipeListScreen();
+    return RecipeListScreen(user: user);
   }
 }
 
 class RecipeListScreen extends StatefulWidget {
-  const RecipeListScreen({super.key});
+  final UserModel user;
+  const RecipeListScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _RecipeListScreenState createState() => _RecipeListScreenState();
@@ -28,7 +29,6 @@ class RecipeListScreen extends StatefulWidget {
 class _RecipeListScreenState extends State<RecipeListScreen> {
   final List<BreadRecipe> _breadRecipes = [];
   final List<PastryRecipe> _pastryRecipes = [];
-  // final List<CookieRecipe> _cookieRecipes = [];
   bool _showAddSubMenus = false;
   bool _showViewSubMenus = false;
 
@@ -43,12 +43,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
       _pastryRecipes.add(recipe);
     });
   }
-
-  // void _addCookieRecipe(CookieRecipe recipe) {
-  //   setState(() {
-  //     _cookieRecipes.add(recipe);
-  //   });
-  // }
 
   void _toggleAddSubMenus() {
     setState(() {
@@ -99,22 +93,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 },
               ),
             ),
-            const SizedBox(width: 8),
-            // Expanded(
-            //   child: _buildButton(
-            //     label: 'Cookie Recipe',
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => CookieRecipeForm(
-            //             onSubmit: _addCookieRecipe,
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
           ],
         ),
       );
@@ -156,25 +134,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 },
               ),
             ),
-            const SizedBox(width: 8),
-            // Expanded(
-            //   child: _buildButton(
-            //     label: 'Cookie Recipes',
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => RecipeDisplayScreen<CookieRecipe>(
-            //             recipes: _cookieRecipes,
-            //             recipeNameGetter: (recipe) => recipe.name,
-            //             recipeDisplayBuilder: (recipe) =>
-            //                 CookieRecipeDisplay(recipe: recipe),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
           ],
         ),
       );
@@ -217,18 +176,22 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildButton(
-                    label: 'Add a Recipe',
-                    onPressed: _toggleAddSubMenus,
-                  ),
-                  AnimatedCrossFade(
-                    firstChild: const SizedBox.shrink(),
-                    secondChild: _buildAddSubMenu(),
-                    crossFadeState: _showAddSubMenus
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: const Duration(milliseconds: 300),
-                  ),
+                  if (widget.user.role ==
+                      'Admin') // Check if the user is an Admin
+                    _buildButton(
+                      label: 'Add a Recipe',
+                      onPressed: _toggleAddSubMenus,
+                    ),
+                  if (widget.user.role ==
+                      'Admin') // Check if the user is an Admin
+                    AnimatedCrossFade(
+                      firstChild: const SizedBox.shrink(),
+                      secondChild: _buildAddSubMenu(),
+                      crossFadeState: _showAddSubMenus
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 300),
+                    ),
                   const SizedBox(height: 16),
                   _buildButton(
                     label: 'View Recipes',

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:viu_bakery/home_page.dart';
 import 'main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'user_model.dart';
 
 class LoginSignupPage extends StatefulWidget {
   const LoginSignupPage({super.key});
@@ -17,19 +20,30 @@ TextEditingController _nameController = TextEditingController();
 class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLogin = true;
 
-  void _login(String email, String password) async {
+  void _login(BuildContext context, String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // NEW: get the user role from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      UserModel user = UserModel(role: userData['role']);
+
       // User is logged in
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Successfully logged in')),
       );
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MyApp()),
+        MaterialPageRoute(builder: (context) => HomePage(user: user)),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -46,7 +60,21 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
   }
 
-  void _signup(String email, String password, String name) async {
+  void _signup(
+      BuildContext context, String email, String password, String name) async {
+    // The domain you want to check
+    String studentDomain = '@stumail.viu.ca';
+
+    // Check if the entered email ends with the specified domain
+    if (!email.endsWith(studentDomain)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Invalid email. Only @stumail.viu.ca emails are allowed.')),
+      );
+      return;
+    }
+
     // Regex pattern to check if the password is 8 characters or more,
     // contains at least 1 uppercase letter, 1 lowercase letter,
     // 1 number, and 1 special character.
@@ -70,13 +98,24 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         password: password,
       );
       await userCredential.user!.updateDisplayName(name);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'role': 'Student',
+        // add any other user data you need
+      });
       // User is signed up
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Successfully signed up')),
       );
+      // Create a UserModel with the role
+      UserModel user = UserModel(role: 'Student');
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MyApp()),
+        MaterialPageRoute(builder: (context) => HomePage(user: user)),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -210,10 +249,11 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         String email = _emailController.text;
         String password = _passwordController.text;
         if (_isLogin) {
-          _login(email, password);
+          _login(context, email, password); // Pass the context to _login
         } else {
           String name = _nameController.text;
-          _signup(email, password, name);
+          _signup(
+              context, email, password, name); // Pass the context to _signup
         }
       },
       child: Text(label),

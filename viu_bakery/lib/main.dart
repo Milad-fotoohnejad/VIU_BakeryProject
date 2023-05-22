@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:viu_bakery/home_page.dart';
+import 'package:viu_bakery/login_signup_page.dart';
 import 'package:viu_bakery/navigation.dart';
 import 'recipe_upload_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         body: Column(
           children: [
             TopNavigationBar(),
-            Expanded(child: HomePage()),
+            Expanded(child: LoginSignupPage()),
           ],
         ),
       ),
