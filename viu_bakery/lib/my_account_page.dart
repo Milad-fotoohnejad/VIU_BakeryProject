@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:viu_bakery/main.dart';
 
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
@@ -72,9 +73,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       textStyle: const TextStyle(fontSize: 18),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       // Sign out
-                      _auth.signOut();
+                      await _auth.signOut();
+
+                      // Navigate back to the main.dart after sign out
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ),
+                      );
                     },
                     child: const Text('Sign Out'),
                   ),

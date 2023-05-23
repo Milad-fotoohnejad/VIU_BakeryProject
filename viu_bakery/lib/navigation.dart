@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/search_page.dart';
-import 'login_signup_page.dart';
+// import 'login_signup_page.dart';
 import 'recipe_upload_page.dart';
 import 'my_account_page.dart';
 
@@ -44,15 +44,15 @@ class TopNavigationBar extends StatelessWidget {
                             builder: (context) => const SearchPage()),
                       );
                     }),
-                _buildNavItem(
-                    title: 'Sign In',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginSignupPage()),
-                      );
-                    }),
+                // _buildNavItem(
+                //     title: 'Sign In',
+                //     onTap: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => const LoginSignupPage()),
+                //       );
+                //     }),
                 _buildNavItem(
                   title: 'My Account',
                   onTap: () {

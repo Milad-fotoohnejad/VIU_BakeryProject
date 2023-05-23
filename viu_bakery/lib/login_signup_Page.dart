@@ -115,7 +115,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           .doc(userCredential.user!.uid)
           .set({
         'role': 'Student',
-        // add any other user data you need
+        userCredential.user!.uid: true,
+        email: true,
       });
       // User is signed up
       ScaffoldMessenger.of(context).showSnackBar(
