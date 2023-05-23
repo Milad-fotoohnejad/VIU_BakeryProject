@@ -21,20 +21,31 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLogin = true;
 
   void _login(BuildContext context, String email, String password) async {
+    const String adminUser = "david.nolan@viu.ca"; // the admin email
+
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // NEW: get the user role from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .get();
+      String role; // will store the role of the user
 
-      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-      UserModel user = UserModel(role: userData['role']);
+      // if the email entered matches the admin's email, set role to 'Admin'
+      if (email == adminUser) {
+        role = 'Admin';
+      } else {
+        // get the user role from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .get();
+
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+        role = userData['role'];
+      }
+
+      UserModel user = UserModel(role: role);
 
       // User is logged in
       ScaffoldMessenger.of(context).showSnackBar(

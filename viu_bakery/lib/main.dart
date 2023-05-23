@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/login_signup_page.dart';
-import 'package:viu_bakery/navigation.dart';
-import 'recipe_upload_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'recipe_upload_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
-      // changed this from API keys to FirebaseOptions
       options: DefaultFirebaseOptions.currentPlatform,
     );
   } on FirebaseException catch (e) {
@@ -31,14 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const Scaffold(
-        body: Column(
-          children: [
-            TopNavigationBar(),
-            Expanded(child: LoginSignupPage()),
-          ],
-        ),
-      ),
+      home: const LoginSignupPage(),
       routes: {
         '/upload': (context) => const RecipeUploadPage(),
       },

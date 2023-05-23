@@ -6,6 +6,7 @@ import 'package:viu_bakery/pastry_recipe_form.dart';
 import 'package:viu_bakery/pastry_recipe_model.dart';
 import 'package:viu_bakery/pastry_recipe_display.dart';
 import 'package:viu_bakery/user_model.dart';
+import 'package:viu_bakery/navigation.dart';
 
 class HomePage extends StatelessWidget {
   final UserModel user;
@@ -14,7 +15,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RecipeListScreen(user: user);
+    return Scaffold(
+      body: Column(
+        children: [
+          const TopNavigationBar(),
+          Expanded(child: RecipeListScreen(user: user)),
+        ],
+      ),
+    );
   }
 }
 
