@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:viu_bakery/login_signup_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'recipe_upload_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +29,6 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const LoginSignupPage(),
-      routes: {
-        '/upload': (context) => const RecipeUploadPage(),
-      },
     );
   }
 }

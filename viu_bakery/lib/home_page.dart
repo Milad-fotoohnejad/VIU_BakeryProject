@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const TopNavigationBar(),
+          TopNavigationBar(user: user),
           Expanded(child: RecipeListScreen(user: user)),
         ],
       ),

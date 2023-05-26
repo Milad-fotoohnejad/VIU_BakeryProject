@@ -1,11 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/search_page.dart';
-// import 'login_signup_page.dart';
+import 'package:viu_bakery/user_model.dart';
 import 'recipe_upload_page.dart';
 import 'my_account_page.dart';
+import 'user_model.dart';
 
 class TopNavigationBar extends StatelessWidget {
-  const TopNavigationBar({super.key});
+  final UserModel user;
+
+  const TopNavigationBar({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +51,6 @@ class TopNavigationBar extends StatelessWidget {
                             builder: (context) => const SearchPage()),
                       );
                     }),
-                // _buildNavItem(
-                //     title: 'Sign In',
-                //     onTap: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => const LoginSignupPage()),
-                //       );
-                //     }),
                 _buildNavItem(
                   title: 'My Account',
                   onTap: () {
@@ -63,15 +61,17 @@ class TopNavigationBar extends StatelessWidget {
                     );
                   },
                 ),
-                _buildNavItem(
-                    title: 'Upload Recipe Excel',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RecipeUploadPage()),
-                      );
-                    }),
+                if (user.role == 'Admin') ...[
+                  _buildNavItem(
+                      title: 'Upload Recipe Excel',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RecipeUploadPage()),
+                        );
+                      }),
+                ]
               ],
             ),
           ),
