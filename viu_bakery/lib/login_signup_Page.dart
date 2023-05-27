@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:viu_bakery/home_page.dart';
-import 'main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_model.dart';
 
@@ -152,6 +151,50 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     });
   }
 
+  void _resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset email sent')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error occurred while sending email')),
+      );
+    }
+  }
+
+  void _displayResetPasswordDialog() {
+    TextEditingController _resetEmailController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Reset Password'),
+          content: TextField(
+            controller: _resetEmailController,
+            decoration: InputDecoration(hintText: "Email"),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                _resetPassword(_resetEmailController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,6 +283,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  if (_isLogin)
+                    TextButton(
+                      onPressed: _displayResetPasswordDialog,
+                      child: Text(
+                        'Forgot Password?',
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 255, 172, 48)),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:viu_bakery/main.dart';
+import 'package:viu_bakery/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyAccountPage extends StatefulWidget {
-  const MyAccountPage({super.key});
+  final UserModel user;
+
+  const MyAccountPage({Key? key, required this.user}) : super(key: key);
 
   @override
   _MyAccountPageState createState() => _MyAccountPageState();
@@ -11,6 +15,119 @@ class MyAccountPage extends StatefulWidget {
 
 class _MyAccountPageState extends State<MyAccountPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+// Variables to store user role and show/hide Add Admin button
+  String _userRole = '';
+  bool _showAddAdminButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserRole();
+  }
+
+  Future<void> _fetchUserRole() async {
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .get();
+    setState(() {
+      _userRole = userSnapshot['role'];
+      _showAddAdminButton = _userRole == 'Admin';
+      //fetch the name of the user
+    });
+  }
+
+  void _displayAddAdminDialog() {
+    // New Admin Text Controllers
+    TextEditingController _newAdminNameController = TextEditingController();
+    TextEditingController _newAdminEmailController = TextEditingController();
+    TextEditingController _newAdminPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add New Admin'),
+          content: Container(
+            margin: const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _newAdminNameController,
+                  decoration: InputDecoration(hintText: "Admin Name"),
+                ),
+                TextField(
+                  controller: _newAdminEmailController,
+                  decoration: InputDecoration(hintText: "Admin Email"),
+                ),
+                TextField(
+                  controller: _newAdminPasswordController,
+                  decoration: InputDecoration(hintText: "Admin Password"),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () async {
+                String name = _newAdminNameController.text;
+                String email = _newAdminEmailController.text;
+                String password = _newAdminPasswordController.text;
+
+                try {
+                  UserCredential userCredential =
+                      await _auth.createUserWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+
+                  // Update the user role to 'Admin' in the Firestore
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(userCredential.user!.uid)
+                      .set({
+                    'name': name,
+                    'role': 'Admin',
+                    'email': email,
+                    userCredential.user!.uid: true,
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('New admin user has been added')),
+                  );
+
+                  Navigator.of(context).pop();
+                } on FirebaseAuthException catch (e) {
+                  String message;
+                  if (e.code == 'weak-password') {
+                    message = 'The password provided is too weak.';
+                  } else if (e.code == 'email-already-in-use') {
+                    message = 'The account already exists for that email.';
+                  } else {
+                    message =
+                        'An unexpected error occurred. Please try again later.';
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +193,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     onPressed: () async {
                       // Sign out
                       await _auth.signOut();
-
                       // Navigate back to the main.dart after sign out
                       Navigator.pushReplacement(
                         context,
@@ -87,6 +203,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     },
                     child: const Text('Sign Out'),
                   ),
+                  if (_showAddAdminButton)
+                    Container(
+                      margin: const EdgeInsets.only(top: 16),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange[300],
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          textStyle: const TextStyle(fontSize: 18),
+                        ),
+                        onPressed: _displayAddAdminDialog,
+                        child: const Text('Add Admin'),
+                      ),
+                    ),
                 ],
               ),
             ),

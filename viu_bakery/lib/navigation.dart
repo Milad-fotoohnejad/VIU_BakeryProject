@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:viu_bakery/search_page.dart';
 import 'package:viu_bakery/user_model.dart';
 import 'recipe_upload_page.dart';
 import 'my_account_page.dart';
-import 'user_model.dart';
 
 class TopNavigationBar extends StatelessWidget {
   final UserModel user;
@@ -57,7 +55,7 @@ class TopNavigationBar extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyAccountPage()),
+                          builder: (context) => MyAccountPage(user: user)),
                     );
                   },
                 ),
