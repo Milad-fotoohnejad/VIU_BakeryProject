@@ -165,26 +165,26 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   void _displayResetPasswordDialog() {
-    TextEditingController _resetEmailController = TextEditingController();
+    TextEditingController resetEmailController = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Reset Password'),
+          title: const Text('Reset Password'),
           content: TextField(
-            controller: _resetEmailController,
-            decoration: InputDecoration(hintText: "Email"),
+            controller: resetEmailController,
+            decoration: const InputDecoration(hintText: "Email"),
           ),
           actions: [
             TextButton(
-              child: Text('Submit'),
+              child: const Text('Submit'),
               onPressed: () {
-                _resetPassword(_resetEmailController.text);
+                _resetPassword(resetEmailController.text);
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -287,9 +287,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   if (_isLogin)
                     TextButton(
                       onPressed: _displayResetPasswordDialog,
-                      child: Text(
+                      child: const Text(
                         'Forgot Password?',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(255, 255, 172, 48)),
                       ),

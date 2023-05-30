@@ -40,30 +40,30 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   void _displayAddAdminDialog() {
     // New Admin Text Controllers
-    TextEditingController _newAdminNameController = TextEditingController();
-    TextEditingController _newAdminEmailController = TextEditingController();
-    TextEditingController _newAdminPasswordController = TextEditingController();
+    TextEditingController newAdminNameController = TextEditingController();
+    TextEditingController newAdminEmailController = TextEditingController();
+    TextEditingController newAdminPasswordController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Admin'),
+          title: const Text('Add New Admin'),
           content: Container(
             margin: const EdgeInsets.all(8),
             child: Column(
               children: [
                 TextField(
-                  controller: _newAdminNameController,
-                  decoration: InputDecoration(hintText: "Admin Name"),
+                  controller: newAdminNameController,
+                  decoration: const InputDecoration(hintText: "Admin Name"),
                 ),
                 TextField(
-                  controller: _newAdminEmailController,
-                  decoration: InputDecoration(hintText: "Admin Email"),
+                  controller: newAdminEmailController,
+                  decoration: const InputDecoration(hintText: "Admin Email"),
                 ),
                 TextField(
-                  controller: _newAdminPasswordController,
-                  decoration: InputDecoration(hintText: "Admin Password"),
+                  controller: newAdminPasswordController,
+                  decoration: const InputDecoration(hintText: "Admin Password"),
                   obscureText: true,
                 ),
               ],
@@ -71,11 +71,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
           actions: [
             TextButton(
-              child: Text('Submit'),
+              child: const Text('Submit'),
               onPressed: () async {
-                String name = _newAdminNameController.text;
-                String email = _newAdminEmailController.text;
-                String password = _newAdminPasswordController.text;
+                String name = newAdminNameController.text;
+                String email = newAdminEmailController.text;
+                String password = newAdminPasswordController.text;
 
                 try {
                   UserCredential userCredential =
@@ -118,7 +118,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               },
             ),
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

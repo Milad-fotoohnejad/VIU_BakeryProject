@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -28,22 +27,22 @@ class MiscellaneousRecipeConverter {
           child: Column(
             children: [
               Text('Category: $category',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text('Name: $name',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Divider(thickness: 2),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Divider(thickness: 2),
+              const SizedBox(height: 8),
               DataTable(
                 columnSpacing: 24,
-                columns: [
+                columns: const [
                   DataColumn(label: Text('Ingredients')),
                   DataColumn(label: Text('Qty')),
                 ],
                 rows: rows,
               ),
-              Divider(thickness: 2),
-              SizedBox(height: 16),
+              const Divider(thickness: 2),
+              const SizedBox(height: 16),
               Text(notes),
             ],
           ),
@@ -51,7 +50,7 @@ class MiscellaneousRecipeConverter {
       );
     } catch (e, stackTrace) {
       print('ERROR: $e\nStack trace: $stackTrace');
-      return SizedBox(); // Return an empty widget or handle the error accordingly
+      return const SizedBox(); // Return an empty widget or handle the error accordingly
     }
   }
 
@@ -68,7 +67,7 @@ class MiscellaneousRecipeConverter {
 
     String notes = rows[29][0] ?? '';
 
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['category'] = category;
     data['name'] = name;
     data['ingredients'] = ingredients;

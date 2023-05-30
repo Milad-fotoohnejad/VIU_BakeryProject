@@ -66,7 +66,7 @@ class TopNavigationBar extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RecipeUploadPage()),
+                              builder: (context) => const RecipeUploadPage()),
                         );
                       }),
                 ]

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -29,27 +28,27 @@ class SavouryRecipeConverter {
           child: Column(
             children: [
               Text('Category: $category',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text('Name: $name',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Divider(thickness: 2),
-              SizedBox(height: 8),
-              Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
-              SizedBox(height: 8),
-              Divider(thickness: 2),
-              SizedBox(height: 8),
-              Text('Ingredients', style: TextStyle(fontSize: 16)),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Divider(thickness: 2),
+              const SizedBox(height: 8),
+              Text('Yield: $yieldValue', style: const TextStyle(fontSize: 16)),
+              const SizedBox(height: 8),
+              const Divider(thickness: 2),
+              const SizedBox(height: 8),
+              const Text('Ingredients', style: TextStyle(fontSize: 16)),
               DataTable(
                 columnSpacing: 24,
-                columns: [
+                columns: const [
                   DataColumn(label: Text('Ingredients')),
                   DataColumn(label: Text('Qty')),
                 ],
                 rows: rows,
               ),
-              Divider(thickness: 2),
-              SizedBox(height: 16),
+              const Divider(thickness: 2),
+              const SizedBox(height: 16),
               Text(notes),
             ],
           ),
@@ -57,7 +56,7 @@ class SavouryRecipeConverter {
       );
     } catch (e, stackTrace) {
       print('ERROR: $e\nStack trace: $stackTrace');
-      return SizedBox(); // Return an empty widget or handle the error accordingly
+      return const SizedBox(); // Return an empty widget or handle the error accordingly
     }
   }
 
@@ -65,7 +64,7 @@ class SavouryRecipeConverter {
     String category = rows[3][1] ?? '';
     double yieldValue = double.tryParse(rows[4][5]?.toString() ?? '') ?? 0.0;
     String name = rows[5][1] ?? '';
-    String notes = rows[40][0] ?? '' + '\n' + rows[31][0] ?? '';
+    String notes = rows[40][0] ?? '' '\n' + rows[31][0] ?? '';
 
     Map<String, String> ingredients = {};
     for (int i = 10; i < 26; i++) {

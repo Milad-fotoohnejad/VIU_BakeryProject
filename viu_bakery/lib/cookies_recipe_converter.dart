@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -29,26 +28,26 @@ class CookiesRecipeConverter {
           child: Column(
             children: [
               Text('Category: $category',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text('Name: $name',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Divider(thickness: 2),
-              SizedBox(height: 8),
-              Text('Yield: $yieldValue', style: TextStyle(fontSize: 16)),
-              SizedBox(height: 8),
-              Divider(thickness: 2),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Divider(thickness: 2),
+              const SizedBox(height: 8),
+              Text('Yield: $yieldValue', style: const TextStyle(fontSize: 16)),
+              const SizedBox(height: 8),
+              const Divider(thickness: 2),
+              const SizedBox(height: 8),
               DataTable(
                 columnSpacing: 24,
-                columns: [
+                columns: const [
                   DataColumn(label: Text('Ingredients')),
                   DataColumn(label: Text('Qty')),
                 ],
                 rows: rows,
               ),
-              Divider(thickness: 2),
-              SizedBox(height: 16),
+              const Divider(thickness: 2),
+              const SizedBox(height: 16),
               Text(notes),
             ],
           ),
@@ -56,7 +55,7 @@ class CookiesRecipeConverter {
       );
     } catch (e, stackTrace) {
       print('ERROR: $e\nStack trace: $stackTrace');
-      return SizedBox(); // Return an empty widget or handle the error accordingly
+      return const SizedBox(); // Return an empty widget or handle the error accordingly
     }
   }
 
@@ -65,7 +64,7 @@ class CookiesRecipeConverter {
     String categoryYield = rows[3][0] ?? '';
     List<String> splitCategoryYield = categoryYield.split(' ');
     String category = splitCategoryYield[0];
-    double yieldValue = double.tryParse(splitCategoryYield[2]?.toString() ?? '') ?? 0.0;
+    double yieldValue = double.tryParse(splitCategoryYield[2].toString() ?? '') ?? 0.0;
     String name = rows[5][0] ?? '';
     String notes = rows[25][0] ?? '';
 
@@ -76,7 +75,7 @@ class CookiesRecipeConverter {
       ingredients[ingredientName] = quantity;
     }
 
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['category'] = category;
     data['name'] = name;
     data['yield'] = yieldValue;
