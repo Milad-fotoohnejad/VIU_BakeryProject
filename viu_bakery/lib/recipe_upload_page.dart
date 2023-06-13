@@ -12,6 +12,7 @@ import 'cookies_recipe_converter.dart';
 import 'qbreads_recipe_converter.dart';
 import 'savoury_recipe_converter.dart';
 import 'sweet_recipe_converter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecipeUploadPage extends StatefulWidget {
   const RecipeUploadPage({super.key});
@@ -22,6 +23,7 @@ class RecipeUploadPage extends StatefulWidget {
 
 class _RecipeUploadPageState extends State<RecipeUploadPage> {
   String _jsonArray = '';
+  bool _filePicked = false;
 
   Future<void> _pickExcelFile() async {
     FilePickerResult? result = await FilePicker.platform
@@ -32,7 +34,23 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       setState(() {
         // using JsonEncoder with indentation to pretty print the JSON array
         _jsonArray = const JsonEncoder.withIndent('  ').convert(jsonArray);
+        _filePicked = true;
       });
+    }
+  }
+
+  void uploadDataToFirestore() {
+    // Assuming you're using Firestore
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    List<dynamic> parsedData = jsonDecode(_jsonArray);
+
+    // Assuming 'recipes' is the collection you want to add documents to
+    CollectionReference recipes = firestore.collection('recipes');
+
+    // Add all the documents in the parsedData list to Firestore
+    for (var documentData in parsedData) {
+      recipes.add(documentData);
     }
   }
 
@@ -57,7 +75,8 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
       recipes.add(PastryRecipeConverter.convertPastryToJson(rows));
     } else if (rows[3][1] != null &&
         cleanString(rows[3][1].toString()).contains('Cakes')) {
-      recipes.add(CakesFillingsRecipeConverter.convertCakesFillingsToJson(rows));
+      recipes
+          .add(CakesFillingsRecipeConverter.convertCakesFillingsToJson(rows));
     } else if (rows[3][1] != null &&
         cleanString(rows[3][1].toString()).contains('Miscellaneous')) {
       recipes.add(MiscellaneousRecipeConverter.MiscellaneousToJson(rows));
@@ -148,54 +167,79 @@ class _RecipeUploadPageState extends State<RecipeUploadPage> {
               margin: const EdgeInsets.only(right: 16),
               child: Expanded(
                 flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextButton(
-                      onPressed: _pickExcelFile,
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 66, 66, 66), backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'Select Excel File',
-                          style: TextStyle(fontSize: 20),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: _pickExcelFile,
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              const Color.fromARGB(255, 66, 66, 66),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            'Select Excel File',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Generated JSON Array:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                      if (_filePicked)
+                        Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          child: TextButton(
+                            onPressed: uploadDataToFirestore,
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                                  const Color.fromARGB(255, 66, 66, 66),
+                              backgroundColor: Colors.yellow[300],
+                            ), // call upload function when this button is pressed
+                            child: const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: Text(
+                                'Upload Data to Database',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Generated JSON Array:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    _jsonArray.isNotEmpty
-                        ? Expanded(
-                            child: Card(
-                              color: Colors.orange[100],
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SingleChildScrollView(
-                                  child: SelectableText(
-                                    _jsonArray,
-                                    style: const TextStyle(fontFamily: 'monospace'),
+                      const SizedBox(height: 8),
+                      _jsonArray.isNotEmpty
+                          ? Expanded(
+                              child: Card(
+                                color: Colors.orange[100],
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: SingleChildScrollView(
+                                    child: SelectableText(
+                                      _jsonArray,
+                                      style: const TextStyle(
+                                          fontFamily: 'monospace'),
+                                    ),
                                   ),
                                 ),
                               ),
+                            )
+                          : const Text(
+                              'No JSON array to display',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 18,
+                              ),
                             ),
-                          )
-                        : const Text(
-                            'No JSON array to display',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 18,
-                            ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
